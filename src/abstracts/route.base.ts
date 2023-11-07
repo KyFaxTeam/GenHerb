@@ -1,0 +1,30 @@
+import express, { Router } from "express";
+import validate from "../utils/validate";
+
+export default abstract class BaseRoute{
+
+    // - The express App
+    public app: express.Application ;
+    // - The express Router
+    public route = Router();
+    // - The route path
+    public path : string;
+    // - The router controller
+    public controller : any ;
+    // validator
+    public validator ;
+
+    public constructor(app : express.Application, path: string, controller : any) {
+        this.app = app,
+        this.path = path;
+        this.controller = controller,
+        this.validator = validate 
+
+    }
+
+    /**
+     * Initialize the router
+     * @returns void
+     */
+    public abstract init() : void
+}
