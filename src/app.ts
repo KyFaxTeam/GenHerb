@@ -1,4 +1,4 @@
-import express = require("express");
+import express from "express"
 import { Express, Request, NextFunction, Response } from "express";
 import Features from "./features";
 import Config from './config'
