@@ -1,15 +1,15 @@
-import { DataSource } from "typeorm";
+import { Entity, Repository } from "typeorm";
 import { dbSource } from "../config/data.source";
 
 export abstract class BaseService {
     // postgresql pool 
-    public db : DataSource;
+    public repository : Repository<any>;
 
     // Postgresql table Name
     public table: string ;
 
-    public constructor(table:string) {
-        this.db = dbSource;
+    public constructor(table:string, entity: any) {
+        this.repository = dbSource.getRepository(entity);
         this.table = table ;
     }
 
