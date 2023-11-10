@@ -15,9 +15,19 @@ import { getQuestionnaireScheme } from "../validations";
 export default class QuizRoute extends BaseRoute {
 
     public constructor(app: express.Application) {
-        super(app, '/v1/quiz', new QuizController())
-
+        super(app, '/geh/api/v1/quiz', new QuizController())
+        /**
+         * Route to handle fetching a quiz for a single player.
+         * Middleware: Validator to validate the request against the 'getQuestionnaireScheme'.
+         * Controller method: 'getQuizForSinglePlayer' handles the logic for retrieving the quiz.
+         */
         this.route.get('', this.validator(getQuestionnaireScheme), this.controller.getQuizForSinglePlayer)
+
+        /**
+         * Route to retrieve all distinct rubrics.
+         * Controller method: 'getAllRubrics' handles the logic for fetching all distinct rubrics.
+         */
+        this.route.get('/allRubrics', this.controller.getAllRubrics)
     }
 
     public init(): void {

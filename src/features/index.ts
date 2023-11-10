@@ -1,5 +1,7 @@
 import * as express from "express";
 import BaseFeature from "../abstracts/features.base";
+import QuizFeature from "./quiz";
+import EventFeature from "./events";
 
 /**
  * I am the Features class.
@@ -17,6 +19,8 @@ export default class Features {
   
     constructor(app: express.Application) {
       this.app = app;
+      this.featuresLists.push(new QuizFeature(this.app));
+      this.featuresLists.push(new EventFeature(this.app));
     }
   
     /**

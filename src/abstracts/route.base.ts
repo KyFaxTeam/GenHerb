@@ -1,5 +1,5 @@
 import express, { Router } from "express";
-import validate from "../utils/validate";
+import valideRequest from "../utils/validate";
 
 export default abstract class BaseRoute{
 
@@ -18,7 +18,7 @@ export default abstract class BaseRoute{
         this.app = app,
         this.path = path;
         this.controller = controller,
-        this.validator = validate 
+        this.validator = valideRequest 
 
     }
 

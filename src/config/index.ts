@@ -10,6 +10,8 @@ require('dotenv').config()
 import * as Joi from "joi";
 import ApiError from "../utils/apiError";
 import httpStatus from "http-status";
+import { Quiz } from "../features/quiz/entities";
+import { Event } from "../features/events/entities";
 
 class Config {
 
@@ -22,7 +24,7 @@ class Config {
             username: string,
             password: string,
             database: string,
-            entities: [],
+            entities: any[],
             url : string
     }
 
@@ -34,6 +36,8 @@ class Config {
     }
 
     public env: string;
+
+    public limitQuiz : number ;
 
     private constructor() {
         const envVarSchema = Joi.object().keys({
@@ -52,7 +56,10 @@ class Config {
             JWT_SECRET_KEY: Joi.string().required().description("JsonWebToken Secret Key"),
             JWT_EMAIL_CONFIRM_DELAY: Joi.number().integer().description("Number of minutes expiration of email validation link"),
 
-            LOG_DIRECTORY : Joi.string().required().description("Directory content all log files")
+            LOG_DIRECTORY : Joi.string().required().description("Directory content all log files"),
+
+            LIMIT_QUIZ : Joi.number().required().description('The maw number of quiz to send a user')
+
         });
 
         const {value: envVars, error} = Joi.compile(envVarSchema).prefs({errors : {label : "key"}}).validate(process.env) ;
@@ -88,7 +95,7 @@ class Config {
             password : envVars.POSTGRES_PASSWORD,
             database : envVars.POSTGRES_DATABASE,
             url : envVars.SUPABASE_POSTGRESQL_URL,
-            entities : []
+            entities : [Quiz, Event]
         };
 
         
@@ -97,7 +104,8 @@ class Config {
             port : envVars.PORT,
             host : envVars.HOST
         };
-        this.env = envVars.NODE_ENV
+        this.env = envVars.NODE_ENV;
+        this.limitQuiz = envVars.LIMIT_QUIZ;
 
     }
 

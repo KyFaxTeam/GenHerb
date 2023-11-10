@@ -1,10 +1,12 @@
 import { BaseService } from "../../../abstracts/service.base";
+import config from "../../../config";
+import { dbSource } from "../../../config/data.source";
 import { Quiz } from "../entities";
-import * as dotenv from 'dotenv'
 
-dotenv.config()
 
 export class QuizService extends BaseService {
+
+    private repo = dbSource.getRepository(Quiz);
     public constructor() {
         super("quiz", Quiz)
     }
@@ -18,12 +20,24 @@ export class QuizService extends BaseService {
 
     public async getQuiz(rubric:string): Promise<any> {
 
-        return this.repository
-            .createQueryBuilder("quiz")
-            .where('quiz.rubric = :rubric', { rubric })
+         const result = await this.repo
+            .createQueryBuilder("quiz").select(['quiz.id', 'quiz.question', 'quiz.answer', 'quiz.otheranswers'])
+            .where('quiz.rubric = :rubric', {rubric: rubric })
             .orderBy('RANDOM()')
-            .take(parseInt(process.env.LIMIT_QUIZ || '20'))
-    }
+            .take(config.limitQuiz).getMany();
 
+        return result ;
+    }
+    
+    /**
+     * I select a distinct value in column 'rubric'
+     * @returns 
+     */
+    public async getAllRubrics() {
+        const result = await this.repo.createQueryBuilder('quiz')
+            .select('DISTINCT(quiz.rubric)').getRawMany()
+
+        return result.map(result => result.rubric);;
+    }
 
 }

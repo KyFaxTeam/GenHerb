@@ -14,17 +14,17 @@ export class Quiz extends BaseEntity {
   @Column()
   answer: string;
 
-  @Column({ nullable: true })
-  otherAnswer: string | null;
+  @Column({type: 'varchar', nullable: true })
+  otheranswers: string[] | null;
   
-  constructor(id: number, question: string, rubric: string, answer: string, otherAnswer: string | null) {
+  constructor(id: number, question: string, rubric: string, answer: string, otheranswers: string[] | null) {
     super();
 
     this.id = id;
     this.question = question;
     this.rubric = rubric;
     this.answer = answer;
-    this.otherAnswer = otherAnswer;
+    this.otheranswers = otheranswers;
   }
   
 }

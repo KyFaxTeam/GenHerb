@@ -6,15 +6,17 @@ import httpStatus from "http-status";
 
 
 const valideRequest = (schema : Object) => (req : Request, res: Response, next : NextFunction) => {    
-    let validShema = pick(schema, ["query", "params", "body"]);
-    
-    let object = pick(req, Object.keys(validShema)) ;
 
-    const {value, error} = Joi.compile(validShema)
-    .prefs({errors : {label:"key"}})
-    .validate(object);
+    const validSchema = pick(schema, ['params', 'query', 'body']);
+    
+    const object = pick(req, Object.keys(validSchema));
+
+    const {value, error} = Joi.compile(validSchema)
+        .prefs({errors : {label:"key"}})
+        .validate(object);
 
     if (error) {
+        // throw error;
        return next(new ApiError({status : httpStatus.BAD_REQUEST, message : error.message}))
     }
 

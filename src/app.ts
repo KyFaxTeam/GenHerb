@@ -1,11 +1,11 @@
-import express from "express"
-import { Express, Request, NextFunction, Response } from "express";
+import express, { Express, Request, NextFunction, Response } from "express"
+// import { Express, Request, NextFunction, Response } from "express";
 import Features from "./features";
 import Config from './config'
 import { errorConverter, errorHandler } from "./middlewares/error";
 import ApiError from "./utils/apiError";
-import * as httpStatus from "http-status";
-import * as bodyParser from "body-parser";
+import httpStatus from "http-status";
+import  bodyParser from "body-parser";
 import helmet from "helmet";
 import { dbSource } from "./config/data.source";
 import logger from "./utils/logger";
