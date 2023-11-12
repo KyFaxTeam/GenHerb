@@ -8,6 +8,8 @@
 
 - [X] Logs files
 
+- [ ] create a table for all rubrics in database 
+
 - Authentification
     - [ ] Register 
     - [ ] Login for each request with bearer Token

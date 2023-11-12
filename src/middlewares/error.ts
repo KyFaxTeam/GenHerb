@@ -1,6 +1,7 @@
 import {Request, Response, NextFunction, request } from "express";
 import ApiError from "../utils/apiError";
 import * as httpStatus from "http-status";
+import logger from "../utils/logger";
 
 /**
  * Convert any other error to ApiError
@@ -15,6 +16,7 @@ import * as httpStatus from "http-status";
  */
 export const errorConverter = (err: any, req: Request, res: Response, next: NextFunction) => {
     let error = err;
+    // throw error ;
     if (!(error instanceof ApiError)) {
       error = new ApiError({status : httpStatus.INTERNAL_SERVER_ERROR, message : error.message || "Unknown Error"});
     }
@@ -33,8 +35,9 @@ export const errorConverter = (err: any, req: Request, res: Response, next: Next
    * @returns {Function} - Express NextFunction
    */
   export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+    // throw err ;
     let { status, message } = err;
-    
     res.send({success : false,  error : {status : status, message : message}});
+    logger.error(`Status : ${status}, Message : ${message}`)
   };
   

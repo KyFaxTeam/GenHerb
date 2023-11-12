@@ -1,127 +1,139 @@
-# ***API-DOC***
-This is a API for `Genie en Herbe` game
-## API CONST
 
-```javascript
- rubrics = ['africa', 'canada', 'cinema', 'dysnatie', 'geographie', 'geopolitique', 'musique', 'news', 'sport']
-```
+---
 
+# API Documentation
 
-## SOLO QUESTIONNAIRE
-- GET `/geh/api/v1/questionnaire` take two parameters.
-    - **`rubric`** : is String tring whose value must be in const `rubric` or equal `General`
-    - **`user_mail`** : is String, valid mail and it must be register for login by user <br>
-    
-    **Exemple** : [https://geh-aviy-jude200.vercel.app/geh/api/v1/questionnaire?rubric=Sport&user_mail=johndoe@geh.com](https://geh-aviy-jude200.vercel.app/geh/api/v1/questionnaire?rubric=Sport&user_mail=johndoe@geh.com)
-    
-    **Response**
+## Quiz
+### Get Quiz for Single Player
+
+#### Endpoint
+**`GET /geh/api/v1/quiz?rubric=Afrique`**
+
+#### Description
+This endpoint is used to fetch a quiz for a single player.
+
+#### Request
+- **Headers**
+  - `Content-Type`: application/json
+  - 
+- **Query Parameters**
+  - params :
+    - rubric : name of rubric whose want get quiz
+
+### Response
+
+- **Success Response**
+  - **Status Code**: 200 OK
+  - **Body**:
     ```json
-    {
-        "status": {
-            "ok": true,
-            "message": null
-        },
-        "data": [
+        {
+            "success": true,
+            "result": 
             {
-                "rubric": "sport",
-                "quiz": [
-                    {
-                        "question": "Qui détient le record du monde du saut à la perche féminin ?",
-                        "answer": " Yelena Isinbayeva.\n",
-                        "others": null
-                    },
-                    ...
-                ]
-            }
-        ]
-    }
+                "rubric": "Afrique",
+                "quiz": 
+                [
+                
+                {
+                    "id": 2,
+                    "question": "Quelle est la langue la plus largement parlée en Afrique, avec plus de 200 millions de locuteurs ?",
+                    "answer": "Le swahili",
+                    "otheranswers": null
+                }, 
+                ... ]
+                }
+        }
     ```
 
-## EVENT QUIZ
-- GET `/geh/api/v1/event/active/<isActive>` : get all event. If `isActive` is equal to `1`, you receive a list of all `active event`, or if it is equal to `0` you receive a list of all `pass event`. <br>
+- **Error Responses**
 
-    - **`user_mail`** : is String, valid mail and it must be register for login by user <br>
-
-        **Exemple** : [https://geh-aviy-jude200.vercel.app/geh/api/v1/event/active/1?user_mail=johndoe@geh.com](https://geh-aviy-jude200.vercel.app/geh/api/v1/event/active/1?user_mail=johndoe@geh.com)
-
-        **OUTPUT** : 
-        ```json
-        {
-        "status": {
-            "ok": true,
-            "message": null
-        },
-        "data": [
-            {
-                "id": "XWvEA9jT4Sw5KL0pyIz1",
-                "name": "The Word Tournament"
-            },
-            {
-                "id": "jHL8lsC6rf1TdI5qpFxy",
-                "name": "The Evil Tournament"
-            },
-            ...
-        ]
-        }
-        ```
-
-- GET `/geh/api/v1/event` : send the questionnaire of the event whose id is \<id> pass by query
-    - **`id`** : is String whose value is knew by the `GET` request for have a active or pass event
-    - **`user_mail`** : is String, valid mail and it must be register for login by user <br>
-
-    **Exemple** : [https://geh-aviy-jude200.vercel.app/geh/api/v1/event?user_mail=johndoe@geh.com&id=XWvEA9jT4Sw5KL0pyIz1](https://geh-aviy-jude200.vercel.app/geh/api/v1/event?user_mail=johndoe@geh.com&id=XWvEA9jT4Sw5KL0pyIz1)
-
-    **Response**
-     ```json
-        {
-        "status": {
-            "ok": true,
-            "message": null
-        },
-        "data": {
-            "id": "XWvEA9jT4Sw5KL0pyIz1",
-            "name": "The Word Tournament",
-            "details": "",
-            "quiz": [...]
-        }
-    }
-     ```
-- GET `/geh/api/v1/event/statistic` : give the statistic of event whose `id` is \<id> pass by `query`
-    - **`id`** : is String whose value is knew by the `GET` request for have a active or pass event
-    - **`user_mail`** : is String, valid mail and it must be register for login by user <br>
-
-- POST `/geh/api/v1/event/` : the user put these answer of event : 
-    - Query
-        - **`id`** : is String whose value is knew by the `GET` request for have a active or pass event
-        - **`user_mail`** : is String, valid mail and it must be register for login by user <br>
-    - Body : The body must be JSON form
-
-
-- GET `/geh/api/v1/event/userResponse` : give user response of event whose `id` is \<id> pass by `query` and user mail is `user_mail`
-    - **`id`** : is String whose value is knew by the `GET` request for have a active or pass event
-    - **`user_mail`** : is String, valid mail and it must be register for login by user <br>
-
-    **Exemple** : [https://geh-aviy-jude200.vercel.app/geh/api/v1/event/userResponse?user_mail=johndoe@geh.com&id=XWvEA9jT4Sw5KL0pyIz1](https://geh-aviy-jude200.vercel.app/geh/api/v1/event/userResponse?user_mail=johndoe@geh.com&id=XWvEA9jT4Sw5KL0pyIz1)
-
-    **Response** : 
+  - **Status Code**: 400 Bad Request
+  - **Body**:
     ```json
-    { 
-        "status": {
-            "ok": true,
-            "message": null
-        },
-        "data": {
-            "user_mail": "judeseruch@yahoo.com",
-            "date": "Monday, 24th December 2023",
-            "score": 344,
-            "data": [
-                ...
+    {
+        "success": true,
+        "result": 
+        {
+            "rubric": "Afriqu",
+            "quiz": 
+            [
+            
             ]
         }
     }
     ```
 
+  - **Status Code**: 500 Internal Server Error
+  - **Body**:
+    ```json
+        {
+        "success": false,
+        "result": "Internal server error. Please try again later.
+    }
+    ```
 
+### Example Usage
 
+```bash
+curl -X GET http://api.example.com/quiz
+```
 
+---
 
+## Get All Rubrics
+
+### Endpoint
+
+`GET /quiz/allRubrics`
+
+### Description
+
+This endpoint is used to retrieve all distinct rubrics.
+
+### Request
+
+- **Headers**
+  - `Content-Type`: application/json
+
+- **Query Parameters**
+  - None
+
+### Request Body Example
+
+```json
+{
+  // Your request body here (if required)
+}
+```
+
+### Response
+
+- **Success Response**
+
+  - **Status Code**: 200 OK
+  - **Body**:
+    ```json
+    {
+      "rubrics": ["a", "b", "c"]
+    }
+    ```
+
+- **Error Responses**
+
+  - **Status Code**: 500 Internal Server Error
+  - **Body**:
+    ```json
+    {
+      "error": "Internal server error. Please try again later."
+    }
+    ```
+
+### Example Usage
+
+```bash
+curl -X GET http://api.example.com/quiz/allRubrics
+```
+
+---
+
+Feel free to customize this documentation based on the actual functionality and requirements of your API. Include any additional details, such as authentication requirements or specific use cases.
