@@ -9,14 +9,14 @@ const logger = createLogger({
         timestamp(),
         prettyPrint(),
         config.env === "development" ? colorize() : uncolorize(),
-        printf(({level, message, timestamp}) => `${level == 'error' ? '🔴': '🟢' } ${timestamp} :: ${level} :: ${message}`)
+        printf(({level, message, timestamp}) => `${level == "error" ? "🔴": "🟢" } ${timestamp} :: ${level} :: ${message}`)
     ),
     transports: [
-      config.env === "development" ? new transports.Console() :
-      new transports.File({ filename: `${config.logDirectory}/error.log` }) 
+        config.env === "development" ? new transports.Console() :
+            new transports.File({ filename: `${config.logDirectory}/error.log` }) 
       
     ],
-  });
+});
 
 
 export default logger ;

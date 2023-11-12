@@ -15,7 +15,7 @@ export default abstract class BaseFeature {
     public constructor(app:express.Application, name: string, description: string) {
         this.app = app;
         this.name = name;
-        this.description = description
+        this.description = description;
     }
 
     /**

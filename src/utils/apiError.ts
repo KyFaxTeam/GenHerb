@@ -10,7 +10,7 @@ export default class ApiError extends Error {
 
     }
 
-    public toObject() : Object {
-        return { status : this.status, message : this.message }
+    public toObject() : object {
+        return { status : this.status, message : this.message };
     }
 }

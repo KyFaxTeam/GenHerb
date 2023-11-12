@@ -5,7 +5,7 @@ import { Request, Response } from "express";
 
 export default class QuizController extends BaseController {
     public constructor() {
-        super(new QuizService())
+        super(new QuizService());
     }
 
     // Function to retrieve a limit quiz questions of rubric from the database  
@@ -15,13 +15,13 @@ export default class QuizController extends BaseController {
         const result = await this.service.getQuiz(rubric as string) ;
 
         // TODO: format your return result
-        res.send(successResponseFormat({rubric : rubric, quiz : result}))
+        res.send(successResponseFormat({rubric : rubric, quiz : result}));
     });
 
     public getAllRubrics = this.catchAsync(async(req: Request, res: Response) => {
         const result = await this.service.getAllRubrics();
 
-        res.send(successResponseFormat(result))
-    })
+        res.send(successResponseFormat(result));
+    });
 }
 

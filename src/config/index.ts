@@ -5,14 +5,14 @@
  * Declare all global system variables
  * 
  */
-import path from "path";
-require('dotenv').config() 
+import dotenv from "dotenv";
 import * as Joi from "joi";
 import ApiError from "../utils/apiError";
 import httpStatus from "http-status";
 import { Quiz } from "../features/quiz/entities";
-import { Event } from "../features/events/entities";
+import { Events } from "../features/events/entities";
 
+dotenv.config();
 class Config {
 
     private static instance: Config;
@@ -26,14 +26,14 @@ class Config {
             database: string,
             entities: any[],
             url : string
-    }
+    };
 
-    public logDirectory: string 
+    public logDirectory: string; 
 
     public server : {
         port : number,
         host : string,
-    }
+    };
 
     public env: string;
 
@@ -58,7 +58,7 @@ class Config {
 
             LOG_DIRECTORY : Joi.string().required().description("Directory content all log files"),
 
-            LIMIT_QUIZ : Joi.number().required().description('The maw number of quiz to send a user')
+            LIMIT_QUIZ : Joi.number().required().description("The maw number of quiz to send a user")
 
         });
 
@@ -82,20 +82,20 @@ class Config {
                     ]
              */
             if(error.details[0].context?.key != "GJS_DEBUG_TOPICS") {
-                throw new ApiError({status : httpStatus.INTERNAL_SERVER_ERROR, message : "Server Error"})
+                throw new ApiError({status : httpStatus.INTERNAL_SERVER_ERROR, message : "Server Error"});
             }
-        };
+        }
 
         this.logDirectory = envVars.LOG_DIRECTORY ;
         this.dbConfig = {
-            type: 'postgres',
+            type: "postgres",
             host : envVars.POSTGRES_HOST,
             port : envVars.POSTGRES_PORT,
             username : envVars.POSTGRES_USER,
             password : envVars.POSTGRES_PASSWORD,
             database : envVars.POSTGRES_DATABASE,
             url : envVars.SUPABASE_POSTGRESQL_URL,
-            entities : [Quiz, Event]
+            entities : [Quiz, Events]
         };
 
         
@@ -109,13 +109,13 @@ class Config {
 
     }
 
-      /**
+    /**
    * Get the singleton instance of the Config class
    * @returns {Config} The singleton instance
    */
     public static getInstance(): Config {
         if (!Config.instance) {
-        Config.instance = new Config();
+            Config.instance = new Config();
         }
         return Config.instance;
     }

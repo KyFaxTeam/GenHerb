@@ -5,9 +5,9 @@ import ApiError from "./apiError";
 import httpStatus from "http-status";
 
 
-const valideRequest = (schema : Object) => (req : Request, res: Response, next : NextFunction) => {    
+const valideRequest = (schema : object) => (req : Request, res: Response, next : NextFunction) => {    
 
-    const validSchema = pick(schema, ['params', 'query', 'body']);
+    const validSchema = pick(schema, ["params", "query", "body"]);
     
     const object = pick(req, Object.keys(validSchema));
 
@@ -17,11 +17,11 @@ const valideRequest = (schema : Object) => (req : Request, res: Response, next :
 
     if (error) {
         // throw error;
-       return next(new ApiError({status : httpStatus.BAD_REQUEST, message : error.message}))
+        return next(new ApiError({status : httpStatus.BAD_REQUEST, message : error.message}));
     }
 
     Object.assign(req, value);
-    return next()
-}
+    return next();
+};
 
 export default valideRequest;

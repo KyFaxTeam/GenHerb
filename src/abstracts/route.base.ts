@@ -18,7 +18,7 @@ export default abstract class BaseRoute{
         this.app = app,
         this.path = path;
         this.controller = controller,
-        this.validator = valideRequest 
+        this.validator = valideRequest; 
 
     }
 

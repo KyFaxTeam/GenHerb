@@ -18,9 +18,9 @@ export default class Features {
     public featuresLists: BaseFeature[] = [];
   
     constructor(app: express.Application) {
-      this.app = app;
-      this.featuresLists.push(new QuizFeature(this.app));
-      this.featuresLists.push(new EventFeature(this.app));
+        this.app = app;
+        this.featuresLists.push(new QuizFeature(this.app));
+        this.featuresLists.push(new EventFeature(this.app));
     }
   
     /**
@@ -29,6 +29,6 @@ export default class Features {
      * @returns void
      */
     public init() {
-      this.featuresLists.forEach((e: BaseFeature) => e.init())
+        this.featuresLists.forEach((e: BaseFeature) => e.init());
     }
-  }
+}
