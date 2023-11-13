@@ -6,7 +6,7 @@ export const getActiveEventScheme = {
     }) };
 
 export const getEventWithIdScheme = {
-    params : Joi.object().keys({
+    query : Joi.object().keys({
         id : Joi.string().required().description("Id for events which want get data")
     })}; 
 

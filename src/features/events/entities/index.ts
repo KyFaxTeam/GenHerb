@@ -25,11 +25,10 @@ export class Events extends BaseEntity{
         expireAt: Date; 
 
 
-    @ManyToMany(() => Quiz)
-    @JoinTable()
-        quiz: Quiz[]; 
+    @Column({ type: "json" })
+        quiz: Record<string, any>; 
 
-    constructor(id: number, __id : string , name: string, image: string, details:string, createdAt:Date, updateAt:Date, expireAt: Date,  quiz:Quiz[]) {
+    constructor(id: number, __id : string , name: string, image: string, details:string, createdAt:Date, updateAt:Date, expireAt: Date,  quiz:Record<string, any>) {
         super();
         
         this.id = id, 
