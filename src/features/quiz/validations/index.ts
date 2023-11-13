@@ -1,7 +1,7 @@
-import Joi from "joi"
+import Joi from "joi";
 
 export const getQuestionnaireScheme = {
     query: Joi.object().keys({
-      rubric: Joi.string().required(),
+        rubric: Joi.string().required(),
     }),
 };

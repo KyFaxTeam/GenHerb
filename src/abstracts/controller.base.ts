@@ -7,9 +7,9 @@ export default abstract class BaseController {
 
     protected service : any ;
     public constructor (service: any) {
-        this.catchAsync = catchAsync
+        this.catchAsync = catchAsync;
         this.pick = pick ;
-        this.service = service
+        this.service = service;
 
     }
 }

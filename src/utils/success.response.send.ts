@@ -1,4 +1,4 @@
 
-export const successResponseFormat = (result:Object)  => {
+export const successResponseFormat = (result:object)  => {
     
-   return {success : true , result : result} };
+    return {success : true , result : result}; };

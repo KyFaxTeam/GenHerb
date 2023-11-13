@@ -1,4 +1,4 @@
- /**
+/**
   * Selected specific keys on a object
   * 
   * @param {Object} object    -  The object source
@@ -9,13 +9,13 @@
 // ! The type of object parameter must be <Object>
 
 const pick = ( object:any, properties:any[]): object => {
-   return properties.reduce((obj, key) => {
-        if (object && object.hasOwnProperty(key)) {
+    return properties.reduce((obj, key) => {
+        if (object && Object.prototype.hasOwnProperty.call(object, key)) {
             obj[key] = object[key];
         }
         return obj;
     }, 
     // initial obj is empty @Object
-    {})
-} 
+    {});
+} ;
 export default pick ;

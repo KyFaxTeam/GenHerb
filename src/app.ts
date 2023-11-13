@@ -1,7 +1,7 @@
-import express, { Express, Request, NextFunction, Response } from "express"
+import express, { Express, Request, NextFunction, Response } from "express";
 // import { Express, Request, NextFunction, Response } from "express";
 import Features from "./features";
-import Config from './config'
+import Config from "./config";
 import { errorConverter, errorHandler } from "./middlewares/error";
 import ApiError from "./utils/apiError";
 import httpStatus from "http-status";
@@ -20,29 +20,29 @@ class App {
         this.app  = express() ;
 
         // - Middlewares before features
-        this.plugMiddlewareBeforeFeatures()
+        this.plugMiddlewareBeforeFeatures();
 
         // check state of database
-        this.dataBaseIsReady()
+        this.dataBaseIsReady();
 
         // - Features instanci
         this.features = new Features(this.app) ;
         // Features initialize
-        this.features.init()
+        this.features.init();
 
         // Middlewares after features
-        this.plugMiddlewareAfterFeatures()
+        this.plugMiddlewareAfterFeatures();
     }
 
     private dataBaseIsReady() {
         dbSource.initialize()
-        .then(() => logger.info(
-            'The database is connected.'
-        ))
+            .then(() => logger.info(
+                "The database is connected."
+            ))
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        .catch((_error) =>  { 
-            console.log(_error);
-            logger.error('Unable to connect to the database: ${error}.')})
+            .catch((_error) =>  { 
+                console.log(_error);
+                logger.error("Unable to connect to the database: ${error}.");});
     }
 
     public listen() {
@@ -55,14 +55,14 @@ class App {
         // - Json form accept
         this.app.use(bodyParser.json());
         // secure apps by setting HTTP response headers.
-        this.app.use(helmet())
+        this.app.use(helmet());
     }
 
     private plugMiddlewareAfterFeatures() {
         // - Configuration load
         this.app.use((_req: Request, _res: Response, next: NextFunction) => {
-            next(new ApiError({status : httpStatus.NOT_FOUND, message : "Request doest not exist"}))
-        })
+            next(new ApiError({status : httpStatus.NOT_FOUND, message : "Request doest not exist"}));
+        });
         // - Converted Error 
         this.app.use(errorConverter); 
         // - Handler Error
@@ -72,7 +72,7 @@ class App {
 
 const app = new App() ;
 if(Config.env === "development") {
-    app.listen()
+    app.listen();
 } else {
     module.exports = app.app;
     console.log("Serveur start");

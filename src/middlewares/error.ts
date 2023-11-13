@@ -18,12 +18,12 @@ export const errorConverter = (err: any, req: Request, res: Response, next: Next
     let error = err;
     // throw error ;
     if (!(error instanceof ApiError)) {
-      error = new ApiError({status : httpStatus.INTERNAL_SERVER_ERROR, message : error.message || "Unknown Error"});
+        error = new ApiError({status : httpStatus.INTERNAL_SERVER_ERROR, message : error.message || "Unknown Error"});
     }
     next(error);
-  };
+};
   
-  /**
+/**
    * Handle ApiError and send response
    *
    * This is a middleware that handles ApiError and sends the response.
@@ -34,10 +34,10 @@ export const errorConverter = (err: any, req: Request, res: Response, next: Next
    * @param {NextFunction} next - NextFunction
    * @returns {Function} - Express NextFunction
    */
-  export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
+export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     // throw err ;
-    let { status, message } = err;
+    const { status, message } = err;
     res.send({success : false,  error : {status : status, message : message}});
-    logger.error(`Status : ${status}, Message : ${message}`)
-  };
+    logger.error(`Status : ${status}, Message : ${message}`);
+};
   

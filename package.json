@@ -5,6 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "transpile": "tsc && nodemon ./build/app",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
     "dev": "nodemon",
     "tsc": "tsc --watch"
   },
@@ -12,6 +14,7 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "@types/eslint": "^8.44.7",
     "@types/pg": "^8.10.8",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
@@ -28,6 +31,9 @@
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
-    "@types/express": "^4.17.17"
+    "@types/express": "^4.17.17",
+    "@typescript-eslint/eslint-plugin": "^6.10.0",
+    "@typescript-eslint/parser": "^6.10.0",
+    "eslint": "^8.53.0"
   }
 }
