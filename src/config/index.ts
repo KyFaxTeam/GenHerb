@@ -38,6 +38,7 @@ class Config {
     public env: string;
 
     public limitQuiz : number ;
+    public secretKey: string;
 
     private constructor() {
         const envVarSchema = Joi.object().keys({
@@ -81,7 +82,8 @@ class Config {
                     }
                     ]
              */
-            if(error.details[0].context?.key != "GJS_DEBUG_TOPICS") {
+            if(error.details[0].context?.key != "GJS_DEBUG_TOPICS" && error.details[0].context?.key != "ACLOCAL_PATH" ) {
+                console.log("Error : ", error)
                 throw new ApiError({status : httpStatus.INTERNAL_SERVER_ERROR, message : "Server Error"});
             }
         }
@@ -106,6 +108,7 @@ class Config {
         };
         this.env = envVars.NODE_ENV;
         this.limitQuiz = envVars.LIMIT_QUIZ;
+        this.secretKey = envVars.JWT_SECRET_KEY;
 
     }
 
