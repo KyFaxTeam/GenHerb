@@ -78,5 +78,4 @@ export class AuthController extends BaseController {
 //     res.status(200).send(successResponseFormat({ message: 'Password changed successfully.' }));
 //   });
   
-  // Ajoute d'autres méthodes de l'AuthController au besoin
 }
