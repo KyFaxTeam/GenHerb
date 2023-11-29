@@ -61,6 +61,7 @@ export class AuthService {
     const token = generateToken(newUser);
     await this.userService.updateUser(newUser.id, {'token': token})
     
+    
     return token;
   }
 

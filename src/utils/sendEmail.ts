@@ -20,7 +20,7 @@ export class EmailService {
     const emailContent = `
     <p>You requested to register in our platform GEH.</p>
     <p>Click on the following link to reset your password:</p>
-    <a href="http://your-app.com/reset-password?token=${token}">Reset Password</a>
+    <a href="http://your-app.com/verify-email?token=${token}">Reset Password</a>
     <p>If you didn't request this reset, you can ignore this email.</p>
   `;
 
@@ -32,8 +32,15 @@ export class EmailService {
       html: emailContent,
     };
 
-    // Send Email
-    await this.transporter.sendMail(mailOptions);
+    try {
+      // Send Email
+      await this.transporter.sendMail(mailOptions);
+      console.log('Email sent successfully.');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      // Handle the error, e.g., throw an exception or log it
+      throw new Error('Failed to send verification email');
+    }
   }
 
   async sendResetPasswordEmail(to: string, resetToken: string): Promise<void> {
@@ -54,6 +61,14 @@ export class EmailService {
     };
 
     // Send Email
-    await this.transporter.sendMail(mailOptions);
+    try {
+      // Send Email
+      await this.transporter.sendMail(mailOptions);
+      console.log('Email sent successfully.');
+    } catch (error) {
+      console.error('Error sending email:', error);
+      // Handle the error, e.g., throw an exception or log it
+      throw new Error('Failed to send verification email');
+    }
   }
 }
