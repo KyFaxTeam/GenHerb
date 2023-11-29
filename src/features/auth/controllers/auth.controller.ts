@@ -4,17 +4,17 @@ import { AuthService } from '../services/';
 import { UserService } from '../services/';
 import { successResponseFormat } from '../../../utils/success.response.send';
 import ApiError from '../../../utils/apiError';
-import { AuthTokenGenerator } from '../utils/authTokenGenerator';
 
 export class AuthController extends BaseController {
 
   constructor() {
-    super(new AuthService(new UserService(), new AuthTokenGenerator()));
+    super(new AuthService(new UserService()));
   }
 
   register = this.catchAsync(async (req: Request, res: Response) => {
-    const userData = req.body;
-    const user = await this.service.register(userData);
+    // console.log("***userData*** : ", req.body)
+    const { pseudo, email, password } = req.body;
+    const user = await this.service.register(pseudo, email, password);
     if (user) {
       res.status(201).send(successResponseFormat(user));
     } else {
@@ -72,6 +72,8 @@ export class AuthController extends BaseController {
   
 
 // changePassword = this.catchAsync(async (req: Request, res: Response) => {
+      //Get ID from JWT
+// const id = res.locals.jwtPayload.userId;
 //     const { currentPassword, newPassword } = req.body;
 //     const userId = req.user.id; // ou tout autre moyen d'obtenir l'ID de l'utilisateur actuel
 //     await this.service.changePassword(userId, currentPassword, newPassword);

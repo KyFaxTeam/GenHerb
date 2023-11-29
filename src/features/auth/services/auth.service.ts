@@ -1,5 +1,5 @@
 import { UserService } from './user.service';
-import { AuthTokenGenerator } from '../utils/authTokenGenerator';
+import { generateToken, returnvalidateUser,  generateResetPasswordToken} from '../utils/authTokenGenerator';
 import { User } from '../entities';
 import { generateHash } from '../utils/encryptionUtils';
 import { EmailService } from '../../../utils/sendEmail';
@@ -7,11 +7,9 @@ import { UserInterface } from '../interfaces';
 
 export class AuthService {
   private userService: UserService;
-  private authTokenGenerator: AuthTokenGenerator;
 
-  constructor(userService: UserService, authTokenGenerator: AuthTokenGenerator) {
+  constructor(userService: UserService) {
     this.userService = userService;
-    this.authTokenGenerator = authTokenGenerator;
   }
 
   async login(mail: string, password: string): Promise<string | null> {
@@ -24,7 +22,7 @@ export class AuthService {
 
       if (user) {
         // Génère un token et le renvoie
-        const token = this.authTokenGenerator.generateToken(user);
+        const token = generateToken(user);
         await this.userService.updateUser(user.id, {'token': token})
 
         return token;
@@ -42,23 +40,25 @@ export class AuthService {
 
 
 
-  async register(pseudo: string, mail: string, password: string): Promise<string | null> {
-    
-    const existingUser = await this.userService.getUserByMail(mail);
+  async register(pseudo: string, email: string, password: string): Promise<string | null> {
+    // console.log("//////////////// email :", email)
+    const existingUser = await this.userService.getUserByMail(email);
 
     if (existingUser) {
       console.error('User with this email already exists.');
       return null;
     }
 
-    const newUser = await this.userService.createUser({ pseudo, email: mail, password });
+    const newUser = await this.userService.createUser({ pseudo, email, password });
 
     if (!newUser) {
       console.error('Failed to create user.');
       return null;
     }
 
-    const token = this.authTokenGenerator.generateToken(newUser);
+    console.log("newUser : ", newUser)
+
+    const token = generateToken(newUser);
     await this.userService.updateUser(newUser.id, {'token': token})
     
     return token;
@@ -87,7 +87,7 @@ export class AuthService {
         return ;
     }
 
-    const token = this.authTokenGenerator.generateResetPasswordToken(user);
+    const token = generateResetPasswordToken(user);
     await this.userService.updateUser(user.id, {'token': token})
 
 
@@ -98,21 +98,21 @@ export class AuthService {
 
   async resetPassword(token: string, newPassword: string): Promise<User|void> {
     
-    const userId = this.authTokenGenerator.returnvalidateUserId(token)
-    if (userId) {
-        const existingUser = await this.userService.getUserById(userId as number);
+    const existingUser = returnvalidateUser(token)
+    if (existingUser instanceof User) {
+        // const existingUser = await this.userService.getUserById(userId as number);
 
-        if (!existingUser) {
-            console.log("User with this id does not exists. ")
-            return 
-        }
+        // if (!existingUser) {
+        //     console.log("User with this id does not exists. ")
+        //     return 
+        // }
 
         if(existingUser.token !== token) {
             console.log("Token does not match ")
             return 
         }
 
-        const newToken = this.authTokenGenerator.generateToken(existingUser);
+        const newToken = generateToken(existingUser);
         // await this.userService.updateUser(existingUser.id, {'token': newToken})
         
         const hashedPassword = await generateHash(newPassword, 10 )
@@ -126,7 +126,7 @@ export class AuthService {
   }
 
   async refreshToken(user: User): Promise<string> {
-    const newToken = this.authTokenGenerator.generateToken(user)
+    const newToken = generateToken(user)
     await this.userService.updateUser(user.id, {'token': newToken})
     return newToken
 

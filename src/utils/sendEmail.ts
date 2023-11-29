@@ -5,14 +5,35 @@ export class EmailService {
 
   constructor() {
     this.transporter = nodemailer.createTransport({
-      host: 'your-smtp-host',
+      host: 'smtp.gmail.com',
       port: 587,
       secure: false,
       auth: {
-        user: 'your-smtp-username',
-        pass: 'your-smtp-password',
+        user: 'kyfaxgroup',
+        pass: 'JYFE#2W!nn6Rs',
       },
     });
+  }
+
+  async sendRegisterEmail(to: string, token: string): Promise<void> {
+    // Email Body
+    const emailContent = `
+    <p>You requested to register in our platform GEH.</p>
+    <p>Click on the following link to reset your password:</p>
+    <a href="http://your-app.com/reset-password?token=${token}">Reset Password</a>
+    <p>If you didn't request this reset, you can ignore this email.</p>
+  `;
+
+    // Email Options
+    const mailOptions: nodemailer.SendMailOptions = {
+      from: 'kyfaxgroup@gmail.com',
+      to: to,
+      subject: 'Password Reset',
+      html: emailContent,
+    };
+
+    // Send Email
+    await this.transporter.sendMail(mailOptions);
   }
 
   async sendResetPasswordEmail(to: string, resetToken: string): Promise<void> {

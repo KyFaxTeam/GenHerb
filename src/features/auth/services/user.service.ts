@@ -16,6 +16,7 @@ export class UserService extends BaseService<User> {
         const { pseudo, email, password, avatar, email_verified } = user; 
 
         // Hash the password before storing it 
+        console.log("user : ", user)
         const hashedPassword = await generateHash(password, 8)
 
         // Create default avatar
