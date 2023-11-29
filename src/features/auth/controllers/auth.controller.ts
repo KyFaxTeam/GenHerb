@@ -12,9 +12,9 @@ export class AuthController extends BaseController {
   }
 
   register = this.catchAsync(async (req: Request, res: Response) => {
-    // console.log("***userData*** : ", req.body)
-    const { pseudo, email, password } = req.body;
-    const user = await this.service.register(pseudo, email, password);
+    console.log("***userData*** : ", req.body)
+    
+    const user = await this.service.register(req.body);
     if (user) {
       res.status(201).send(successResponseFormat(user));
     } else {

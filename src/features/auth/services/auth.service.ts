@@ -4,6 +4,7 @@ import { User } from '../entities';
 import { generateHash } from '../utils/encryptionUtils';
 import { EmailService } from '../../../utils/sendEmail';
 import { UserInterface } from '../interfaces';
+import ApiError from '../../../utils/apiError';
 
 export class AuthService {
   private userService: UserService;
@@ -40,8 +41,14 @@ export class AuthService {
 
 
 
-  async register(pseudo: string, email: string, password: string): Promise<string | null> {
+  async register(user: Partial<UserInterface>): Promise<string | null> {
     // console.log("//////////////// email :", email)
+    const { pseudo, email, password } = user;
+
+    if (!pseudo || !email || !password) {
+      throw new ApiError({ status: 400, message: 'Pseudo, email, and password are required fields.' })
+    }
+
     const existingUser = await this.userService.getUserByMail(email);
 
     if (existingUser) {
@@ -49,7 +56,7 @@ export class AuthService {
       return null;
     }
 
-    const newUser = await this.userService.createUser({ pseudo, email, password });
+    const newUser = await this.userService.createUser(user);
 
     if (!newUser) {
       console.error('Failed to create user.');
@@ -58,9 +65,12 @@ export class AuthService {
 
     console.log("newUser : ", newUser)
 
+    
     const token = generateToken(newUser);
     await this.userService.updateUser(newUser.id, {'token': token})
     
+      // // Exclude the 'password' property from newUser
+      // const { password: excludedPassword, ...userWithoutPassword } = newUser;
     
     return token;
   }

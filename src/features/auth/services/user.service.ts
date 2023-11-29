@@ -1,5 +1,6 @@
 import { BaseService } from "../../../abstracts/service.base";
 import { verifyHash, generateHash } from "../utils/encryptionUtils";
+import ApiError from "../../../utils/apiError";
 import * as gravatar from 'gravatar'; 
 
 
@@ -12,8 +13,12 @@ export class UserService extends BaseService<User> {
         super("user", User);
     }
 
-    async createUser(user:UserInterface) : Promise<User> {
-        const { pseudo, email, password, avatar, email_verified } = user; 
+    async createUser(user:Partial<UserInterface>) : Promise<User> {
+        const { pseudo, email, password, avatar, email_verified, roles } = user; 
+
+        if (!pseudo || !email || !password) {
+            throw new ApiError({ status: 400, message: 'Pseudo, email, and password are required fields 1111.' })
+        }
 
         // Hash the password before storing it 
         console.log("user : ", user)
@@ -27,7 +32,8 @@ export class UserService extends BaseService<User> {
             email, 
             password: hashedPassword, 
             avatar: userAvatar || '', 
-            email_verified: email_verified || false, 
+            email_verified: email_verified || false,
+            roles: roles || 'user', 
         })
 
         return await this.repository.save(newUser)
@@ -39,6 +45,8 @@ export class UserService extends BaseService<User> {
         if (user && updates) {
             Object.assign(user, updates); 
             await this.repository.save(user);
+
+            console.log("newUser after Token : ", user)
             return user; 
         }
 

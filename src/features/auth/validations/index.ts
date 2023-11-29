@@ -1,5 +1,7 @@
 import Joi from 'joi';
 
+const allowedRoles = ['user', 'admin', 'moderator', 'editor', 'guest'];
+
 export const registrationValidator = {
   body: Joi.object({
     pseudo: Joi.string().required().min(2).max(20).messages({ 
@@ -23,6 +25,12 @@ export const registrationValidator = {
       'any.only': 'Passwords must match.',
       'any.required': 'Password confirmation is required.',
     }),
+
+    roles : Joi.string().valid(...allowedRoles).messages({
+      'any.only': 'Roles value is not appropriate'
+    }), 
+
+    avatar: Joi.string()
   }),
 };
 
