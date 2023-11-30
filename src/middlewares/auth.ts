@@ -10,10 +10,12 @@ export const authenticateUser = async (req: RequestwithUser, _res: Response, nex
         const user = returnvalidateUser(token)
         if (user) {
             req.user = user;
+
+            console.log("******** req.user **********: ", req.user)
             next();
         } 
     }
-    const error = new ApiError({ status: 403, message: 'Token invalid' });
+    const error = new ApiError({ status: 403, message: 'Token Or User is invalid' });
     next(error)
 
   };
@@ -34,7 +36,7 @@ export const requiredRole = (role: string) => {
 };
 
 
-export const verifyOwnership = async (req: RequestwithUser, res: Response, next: NextFunction) => {
+export const verifyOwnership = (req: RequestwithUser, res: Response, next: NextFunction) => {
     const userIdFromToken = req.user.id; 
   
     // Récupère l'ID du compte à partir des paramètres de la requête, par exemple, dans l'URL

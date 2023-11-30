@@ -1,4 +1,5 @@
 import nodemailer from 'nodemailer';
+import ApiError from './apiError';
 
 export class EmailService {
   private transporter: nodemailer.Transporter;
@@ -7,10 +8,10 @@ export class EmailService {
     this.transporter = nodemailer.createTransport({
       host: 'smtp.gmail.com',
       port: 587,
-      secure: false,
+      secure: true,
       auth: {
-        user: 'kyfaxgroup',
-        pass: 'JYFE#2W!nn6Rs',
+        user: process.env.EMAIL,
+        pass: process.env.PASSWORD,
       },
     });
   }
@@ -26,7 +27,7 @@ export class EmailService {
 
     // Email Options
     const mailOptions: nodemailer.SendMailOptions = {
-      from: 'kyfaxgroup@gmail.com',
+      from: process.env.EMAIL,
       to: to,
       subject: 'Password Reset',
       html: emailContent,
@@ -39,22 +40,23 @@ export class EmailService {
     } catch (error) {
       console.error('Error sending email:', error);
       // Handle the error, e.g., throw an exception or log it
-      throw new Error('Failed to send verification email');
+      throw new ApiError({status: 400, message: 'Failed to send verification email'});
+
     }
   }
 
-  async sendResetPasswordEmail(to: string, resetToken: string): Promise<void> {
+  async sendResetPasswordEmail(to: string, resetToken: string, newPassword: string): Promise<void> {
     // Email Body
     const emailContent = `
     <p>You requested to reset your password.</p>
     <p>Click on the following link to reset your password:</p>
-    <a href="http://your-app.com/reset-password?token=${resetToken}">Reset Password</a>
+    <a href= "http://localhost:3001/geh/api/v1/auth/reset-password/:${resetToken}?new_password= ${newPassword}">Reset Password</a>
     <p>If you didn't request this reset, you can ignore this email.</p>
   `;
 
     // Email Options
     const mailOptions: nodemailer.SendMailOptions = {
-      from: 'kyfaxgroup@gmail.com',
+      from: process.env.EMAIL,
       to: to,
       subject: 'Password Reset',
       html: emailContent,
@@ -68,7 +70,7 @@ export class EmailService {
     } catch (error) {
       console.error('Error sending email:', error);
       // Handle the error, e.g., throw an exception or log it
-      throw new Error('Failed to send verification email');
+      throw new ApiError({status: 400, message: 'Failed to send verification email'});
     }
   }
 }

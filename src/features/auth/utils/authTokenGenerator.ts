@@ -45,7 +45,7 @@ export const generateResetPasswordToken = (user: User): string => {
   const payload = generateBasePayload(user);
 
   const options = {
-    expiresIn: '10mn', 
+    expiresIn: '10m', 
   };
 
   return jwt.sign(payload, secretKey, options);

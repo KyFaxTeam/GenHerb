@@ -32,7 +32,10 @@ email_verified?: boolean;
 is_active?: boolean;
 
 @Column({ nullable: true, unique: true })
-token?: string;
+token?: string | null;
+
+@Column({ nullable: true, unique: true })
+tempToken?: string;
 
 @Column({
   type: 'enum',

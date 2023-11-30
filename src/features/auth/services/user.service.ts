@@ -21,8 +21,8 @@ export class UserService extends BaseService<User> {
         }
 
         // Hash the password before storing it 
-        console.log("user : ", user)
-        const hashedPassword = await generateHash(password, 8)
+        // console.log("user : ", user)
+        const hashedPassword = await generateHash(password)
 
         // Create default avatar
         const userAvatar = avatar || gravatar.url(email, {s: '100', r: 'x', 'd': 'retro'}, true);
@@ -46,7 +46,7 @@ export class UserService extends BaseService<User> {
             Object.assign(user, updates); 
             await this.repository.save(user);
 
-            console.log("newUser after Token : ", user)
+            // console.log("newUser after Token : ", user)
             return user; 
         }
 

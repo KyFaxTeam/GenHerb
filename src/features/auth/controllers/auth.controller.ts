@@ -4,6 +4,7 @@ import { AuthService } from '../services/';
 import { UserService } from '../services/';
 import { successResponseFormat } from '../../../utils/success.response.send';
 import ApiError from '../../../utils/apiError';
+// import { RequestwithUser } from '../interfaces';
 
 export class AuthController extends BaseController {
 
@@ -12,7 +13,7 @@ export class AuthController extends BaseController {
   }
 
   register = this.catchAsync(async (req: Request, res: Response) => {
-    console.log("***userData*** : ", req.body)
+    // console.log("***userData*** : ", req.body)
     
     const user = await this.service.register(req.body);
     if (user) {
@@ -33,13 +34,18 @@ export class AuthController extends BaseController {
   });
 
   forgotPassword = this.catchAsync(async (req: Request, res: Response) => {
-    const { mail } = req.body;
-    const result = await this.service.forgotPassword(mail);
+    const { email, newPassword } = req.body;
+    const result = await this.service.forgotPassword(email, newPassword);
+    
+    if (result === null) {
+      res.send(new ApiError({ status: 401, message: 'User not found' }));
+    }
     res.status(200).send(successResponseFormat({ message: 'Password reset instructions sent.' }));
   });
 
   resetPassword = this.catchAsync(async (req: Request, res: Response) => {
-    const { token, newPassword } = req.body;
+    const { token } = req.params;
+    const newPassword = req.query.new_password
     const user = await this.service.resetPassword(token, newPassword);
     if (user) {
         res.status(200).send(successResponseFormat({ user }));

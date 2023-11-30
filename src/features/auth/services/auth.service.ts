@@ -1,7 +1,7 @@
 import { UserService } from './user.service';
 import { generateToken, returnvalidateUser,  generateResetPasswordToken} from '../utils/authTokenGenerator';
 import { User } from '../entities';
-import { generateHash } from '../utils/encryptionUtils';
+import { generateHash, verifyHash } from '../utils/encryptionUtils';
 import { EmailService } from '../../../utils/sendEmail';
 import { UserInterface } from '../interfaces';
 import ApiError from '../../../utils/apiError';
@@ -33,12 +33,10 @@ export class AuthService {
     return null;
   }
 
-  async logout(user: UserInterface): Promise<void> {
+  async logout(user: User): Promise<void> {
     user.token = ''; 
     await this.userService.repository.save(user)
   }
-
-
 
 
   async register(user: Partial<UserInterface>): Promise<string | null> {
@@ -63,7 +61,7 @@ export class AuthService {
       return null;
     }
 
-    console.log("newUser : ", newUser)
+    // console.log("newUser : ", newUser)
 
     
     const token = generateToken(newUser);
@@ -85,55 +83,47 @@ export class AuthService {
         return 
     }
 
-    const hashedPassword = await generateHash(newPassword, 10 )
-    return await this.userService.updateUser(userId, { password: hashedPassword });
+    const hashedPassword = await generateHash(newPassword)
+    return await this.userService.updateUser(userId, { password: hashedPassword, tempToken: null });
     
   }
 
-  async forgotPassword(mail: string): Promise<void> {
-    const user = await this.userService.getUserByMail(mail);
+  async forgotPassword(email: string, newPassword: string): Promise<void | null> {
+    const user = await this.userService.getUserByMail(email);
 
     if(!user) {
         console.log("Informations of password reset have been sent ❌")
-        return ;
+        return null;
     }
 
-    const token = generateResetPasswordToken(user);
-    await this.userService.updateUser(user.id, {'token': token})
-
+    const tempToken = generateResetPasswordToken(user);
+    await this.userService.updateUser(user.id, {'tempToken': await generateHash(tempToken)})
 
     const sendEmail = new EmailService()
-    return await sendEmail.sendResetPasswordEmail(mail, token)
+    return await sendEmail.sendResetPasswordEmail(email, tempToken, newPassword)
     
   }
 
-  async resetPassword(token: string, newPassword: string): Promise<User|void> {
+  async resetPassword(token: string, newPassword: string): Promise<string|null> {
     
+      
     const existingUser = returnvalidateUser(token)
-    if (existingUser instanceof User) {
-        // const existingUser = await this.userService.getUserById(userId as number);
-
-        // if (!existingUser) {
-        //     console.log("User with this id does not exists. ")
-        //     return 
-        // }
-
-        if(existingUser.token !== token) {
-            console.log("Token does not match ")
-            return 
-        }
-
-        const newToken = generateToken(existingUser);
-        // await this.userService.updateUser(existingUser.id, {'token': newToken})
-        
-        const hashedPassword = await generateHash(newPassword, 10 )
-        return await this.userService.updateUser(existingUser.id, { password: hashedPassword });
-
-    //   return await this.changePassword(userId as number, newPassword)
-    } else {
-        console.log("You can't reset your password ")
-        return ;
+    if(!existingUser){
+        return null;
     }
+
+    const bool = verifyHash(token, existingUser.tempToken as string)
+    if (!bool) {
+      return null;
+    }
+
+    const updateUser = await this.changePassword(existingUser.id, newPassword)
+    if (!updateUser) {
+      return null
+    }
+    
+    const newtoken = await this.refreshToken(updateUser)
+    return newtoken
   }
 
   async refreshToken(user: User): Promise<string> {

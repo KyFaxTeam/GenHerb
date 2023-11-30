@@ -11,6 +11,7 @@ export interface UserInterface {
     isActive?: boolean;
     email_verified?: boolean;
     token?: string;
+    tempToken?: string | null;
     created_at?: Date;
     updated_at?: Date;
     

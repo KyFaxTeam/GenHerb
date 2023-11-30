@@ -38,13 +38,18 @@ export const registrationValidator = {
 
 export const loginValidator = {
   body : Joi.object({
-    email: Joi.string().email().required(),
-    password: Joi.string().required(),
+    email: Joi.string().trim().email().required().messages({
+      'string.email': 'Email address must be in a valid format.',
+      'any.required': 'Email address is required.',
+    }),
+    password: Joi.string().required().messages({
+      'any.required': 'Password is required.',
+    }),
 })
 }
 export const forgotPasswordValidator = {
   body: Joi.object({
-    email: Joi.string().email().required().messages({
+    email: Joi.string().trim().email().required().messages({
       'string.email': 'Email address must be in a valid format.',
       'any.required': 'Email address is required.',
     }),
@@ -52,13 +57,14 @@ export const forgotPasswordValidator = {
 }
 
 export const resetPasswordValisator = {
-  body: Joi.object({
+  query: Joi.object({
     token: Joi.string().required(),
 
-    password: Joi.string().min(6).required().messages({
-        'string.min': 'Password must be at least {{#limit}} characters long.',
-        'any.required': 'Password is required.',
-      })
+    new_password: Joi.string().required().min(6).max(20).messages({
+      'string.min': 'Password must be at least {{#limit}} characters long.',
+      'string.max': 'Password must be at most {{#limit}} characters long.',
+      'any.required': 'Password is required.',
+    }),
 })
 }
 

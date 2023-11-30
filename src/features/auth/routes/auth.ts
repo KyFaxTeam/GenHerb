@@ -26,10 +26,11 @@ export default class AuthRoute extends BaseRoute {
 
         this.route.post('/register', this.validator(registrationValidator), this.controller.register); 
         this.route.post('/login', this.validator(loginValidator), this.controller.login)
-        this.route.post('/forgot-password', [authenticateUser] as any, [verifyOwnership] as any, this.validator(forgotPasswordValidator), this.controller.forgotPassword)
-        this.route.post('/reset-password', this.validator(resetPasswordValisator), this.controller.resetPassword)
+        this.route.post('/forgot-password', this.validator(forgotPasswordValidator), this.controller.forgotPassword)
+        // route to verify reset password link
+        this.route.get('/reset-password/:token', this.validator(resetPasswordValisator), this.controller.resetPassword)
         // this.route.post('/refresh-token', this.validator(), this.controller.refreshToken)
-        // this.route.post('/logout', this.validator, this.controller.logout)
+        // this.route.post('/logout', this.validator, [authenticateUser] as any, [verifyOwnership] as any, this.controller.logout)
        
     }
 
