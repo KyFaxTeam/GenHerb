@@ -3,12 +3,12 @@ import { BaseService } from "../../../abstracts/service.base";
 import config from "../../../config";
 import { dbSource } from "../../../config/data.source";
 import ApiError from "../../../utils/apiError";
+
 import { Quiz } from "../entities";
 
 
-export class QuizService extends BaseService {
+export class QuizService extends BaseService<Quiz> {
 
-    private repo = dbSource.getRepository(Quiz);
     public constructor() {
         super("quiz", Quiz);
     }

@@ -70,7 +70,7 @@ class App {
     }
 }
 
-const app = new App() ;
+export const app = new App() ;
 if(Config.env === "development") {
     app.listen();
 } else {

@@ -37,7 +37,7 @@ export const errorConverter = (err: any, req: Request, res: Response, next: Next
 export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
     // throw err ;
     const { status, message } = err;
-    res.send({success : false,  error : {status : status, message : message}});
+    res.status(status).send({success : false,  error : {status : status, message : message}});
     logger.error(`Status : ${status}, Message : ${message}`);
 };
   

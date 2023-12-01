@@ -1,6 +1,6 @@
 - [X] Edit complete config file
 
-- [ ] Use typeorm
+- [X] Use typeorm
 
 - [ ] Error Management
 
@@ -16,7 +16,7 @@
   
 - Quiz
   - [ ] Impl `general` rubric script
-  - [ ] get statistic for each player
+
   
 - Events
     - [X] Get event statistic

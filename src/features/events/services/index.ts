@@ -7,12 +7,14 @@ import * as dotenv from "dotenv";
 import { StatisticsForEvents } from "../entities/statistic";
 import config from "../../../config";
 
+
 dotenv.config();
 
 export class EventService extends BaseService {
     private repoEvent = dbSource.getRepository(Event);
     private repoStatistic = dbSource.getRepository(StatisticsForEvents);
     constructor() {super("events", Event);}
+
 
     /**
      * Retrieve active or expired events based on the 'isActive' parameter.

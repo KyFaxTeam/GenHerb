@@ -9,7 +9,7 @@ const logger = createLogger({
         timestamp(),
         prettyPrint(),
         config.env === "development" ? colorize() : uncolorize(),
-        printf(({level, message, timestamp}) => `${level == "error" ? "🔴": "🟢" } ${timestamp} :: ${level} :: ${message}`)
+        printf(({level, message, timestamp}) => `${level === "error" ? "🔴": "🟢" } ${timestamp} :: ${level} :: ${message}`)
     ),
     transports: [
         config.env === "development" ? new transports.Console() :
