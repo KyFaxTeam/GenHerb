@@ -8,14 +8,15 @@ export default class QuizController extends BaseController {
         super(new QuizService());
     }
 
-    // Function to retrieve a limit quiz questions of rubric from the database  
+
+    // Function to retrieve a limit quiz questions of thmatic from the database  
     // TODO:  I need to use the previously written pick function work
     public getQuizForSinglePlayer = this.catchAsync(async (req: Request, res: Response) => {
-        const { rubric } = req.query ; 
-        const result = await this.service.getQuiz(rubric as string) ;
+        const { thematic } = req.query ; 
+        const result = await this.service.getQuiz(thematic as string) ;
 
         // TODO: format your return result
-        res.send(successResponseFormat({rubric : rubric, quiz : result}));
+        res.send(successResponseFormat({thematic : thematic, quiz : result}));
     });
 
     public getAllRubrics = this.catchAsync(async(req: Request, res: Response) => {

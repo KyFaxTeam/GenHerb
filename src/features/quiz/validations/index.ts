@@ -2,6 +2,7 @@ import Joi from "joi";
 
 export const getQuestionnaireScheme = {
     query: Joi.object().keys({
-        rubric: Joi.string().required(),
+        thematic: Joi.string().required(),
+        level : Joi.string().default("Normal")
     }),
 };

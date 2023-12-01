@@ -1,30 +1,48 @@
-import { Entity, PrimaryGeneratedColumn, BaseEntity, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
 
 @Entity("quiz")
-export class Quiz extends BaseEntity {
+export class Quiz {
   @PrimaryGeneratedColumn()
       id: number;
 
   @Column()
       question: string;
 
-  @Column()
-      rubric: string;
+  @Column("simple-array", {array : true})
+      answer: string[];
 
   @Column()
-      answer: string;
+      thematic: string;
 
-  @Column({type: "varchar", nullable: true })
-      otheranswers: string[] | null;
-  
-  constructor(id: number, question: string, rubric: string, answer: string, otheranswers: string[] | null) {
-      super();
+  @Column({ nullable: true })
+      subThematic: string;
 
-      this.id = id;
+  @Column()
+      level: string;
+
+  @Column()
+      points: number;
+
+  @Column()
+      times: number;
+
+  constructor(
+      id: number,
+      question: string,
+      answer: string[],
+      thematic: string,
+      subThematic: string,
+      level: string,
+      points: number,
+      times: number
+  ) {
+      this.id = id ;
       this.question = question;
-      this.rubric = rubric;
       this.answer = answer;
-      this.otheranswers = otheranswers;
+      this.thematic = thematic;
+      this.subThematic = subThematic;
+      this.level = level;
+      this.points = points;
+      this.times = times;
   }
-  
 }

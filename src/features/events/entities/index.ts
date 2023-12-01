@@ -1,43 +1,50 @@
-import { Column, BaseEntity, PrimaryGeneratedColumn, Entity, CreateDateColumn, ManyToMany, JoinTable } from "typeorm"; 
-import { Quiz } from "../../quiz/entities";
+import { Entity, PrimaryGeneratedColumn, Column} from "typeorm";
 
 @Entity("events")
-export class Events extends BaseEntity{
-    @PrimaryGeneratedColumn()
-        id: number; 
+export class Event {
+  @PrimaryGeneratedColumn()
+      id: number;
 
-    @Column()
-        name: string; 
+  @Column()
+      name: string;
 
-    @Column()
-        __id: string; 
+  @Column({ nullable: true })
+      image: string;
 
-    @Column()
-        image: string; 
+  @Column("json", {array : true})
+      content: object[]; // Assuming a custom type for 'List<Map>>'
 
-    @Column()
-        details: string; 
+  @Column()
+      details: string;
 
-    @CreateDateColumn()
-        createdAt: Date; 
+  @Column({ nullable: true })
+      description: string ;
 
-    @Column({ type: "timestamp" })
-        expireAt: Date; 
+  @Column({ type: "timestamp" })
+      createdAt: Date;
 
+  @Column({ type: "timestamp" })
+      expireAt: Date;
 
-    @Column({ type: "json" })
-        quiz: Record<string, any>; 
+  constructor(
+      id : number,
+      name: string,
+      content: object[],
+      details: string,
+      createdAt: Date ,
+      expireAt: Date ,
+      image: string,
+      description: string,
 
-    constructor(id: number, __id : string , name: string, image: string, details:string, createdAt:Date, updateAt:Date, expireAt: Date,  quiz:Record<string, any>) {
-        super();
-        
-        this.id = id, 
-        this.__id = __id,
-        this.name = name,
-        this.image = image, 
-        this.details = details,
-        this.createdAt = createdAt, 
-        this.quiz = quiz;
-        this.expireAt = expireAt;
-    }
+     
+  ) {
+      this.id = id;
+      this.name = name;
+      this.content = content;
+      this.details = details;
+      this.createdAt = createdAt;
+      this.expireAt = expireAt ;
+      this.image = image; 
+      this.description = description ;
+  }
 }
