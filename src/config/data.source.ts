@@ -9,4 +9,6 @@ export const dbSource: DataSource = new DataSource({
     port: Number(Config.dbConfig.port),
     database: Config.dbConfig.database,
     entities: Config.dbConfig.entities,
+    // logging: true,
+    synchronize: true
 });

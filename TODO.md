@@ -1,6 +1,6 @@
 - [X] Edit complete config file
 
-- [ ] Use typeorm
+- [X] Use typeorm
 
 - [ ] Impl `general` rubric script
 
@@ -11,7 +11,7 @@
 - [ ] create a table for all rubrics in database 
 
 - Authentification
-    - [ ] Register 
+    - [ ] Register : pseudo, mail, avatar,  createdAt, updateAt, id, token
     - [ ] Login for each request with bearer Token
   
 - Events

@@ -1,12 +1,10 @@
 import { BaseService } from "../../../abstracts/service.base";
 import config from "../../../config";
-import { dbSource } from "../../../config/data.source";
 import { Quiz } from "../entities";
 
 
-export class QuizService extends BaseService {
+export class QuizService extends BaseService<Quiz> {
 
-    private repo = dbSource.getRepository(Quiz);
     public constructor() {
         super("quiz", Quiz);
     }
@@ -20,7 +18,7 @@ export class QuizService extends BaseService {
 
     public async getQuiz(rubric:string): Promise<any> {
 
-        const result = await this.repo
+        const result = await this.repository
             .createQueryBuilder("quiz").select(["quiz.id", "quiz.question", "quiz.answer", "quiz.otheranswers"])
             .where("quiz.rubric = :rubric", {rubric: rubric })
             .orderBy("RANDOM()")
@@ -34,7 +32,7 @@ export class QuizService extends BaseService {
      * @returns 
      */
     public async getAllRubrics() {
-        const result = await this.repo.createQueryBuilder("quiz")
+        const result = await this.repository.createQueryBuilder("quiz")
             .select("DISTINCT(quiz.rubric)").getRawMany();
 
         return result.map(result => result.rubric);

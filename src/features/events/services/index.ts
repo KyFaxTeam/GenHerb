@@ -5,9 +5,10 @@ import ApiError from "../../../utils/apiError";
 import { Events } from "../entities";
 import * as dotenv from "dotenv";
 
+
 dotenv.config();
 
-export class EventService extends BaseService {
+export class EventService extends BaseService<Events> {
     private repo = dbSource.getRepository(Events);
     constructor() {super("events", Events);}
 
