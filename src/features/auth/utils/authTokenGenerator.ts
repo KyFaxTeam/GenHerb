@@ -1,6 +1,7 @@
 import * as jwt from 'jsonwebtoken';
 import { User } from '../entities';
 import config from '../../../config';
+import { Request } from 'express';
 
 
 const secretKey = config.secretKey;
@@ -72,10 +73,11 @@ export const isverifyToken = (token: string): boolean => {
   }
 }
 
-export const returnvalidateUser = (token: string): User| null => {
+export const returnvalidateUser = (token: string): number| null => {
   try {
     const decodedToken: any = jwt.verify(token, secretKey, { ignoreExpiration: false });
-    return decodedToken.user
+    console.log("decodedToken: ", decodedToken)
+    return decodedToken.userId
   } catch (error) {
     console.error(error);
     return null;
@@ -92,17 +94,18 @@ export const getPayload = (token: string): any | null => {
   }
 }
 
-// const getTokenFromHeader = (req) => {
-//   const { authorization } = req.headers;
-//   if (
-//     (authorization && authorization.split(' ')[0] === 'Token') ||
-//     (authorization && authorization.split(' ')[0] === 'Bearer')
-//   ) {
-//     return authorization.split(' ')[1];
-//   }
-//   // tslint:disable-next-line: no-null-keyword
-//   return null;
-// };
+
+
+export const getTokenFromHeader = (req: Request) => {
+  const authorizationHeader = req.headers['authorization'] || req.headers['Authorization'];
+
+  if (authorizationHeader && (authorizationHeader as string).startsWith('Token') || (authorizationHeader as string).startsWith('Bearer')) {
+    return (authorizationHeader as string).split(' ')[1];
+  }
+
+  return null;
+};
+
 
 
 // const verifyTokenAndCheckDatabase = async (token: string): Promise<User | null> => {

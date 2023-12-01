@@ -4,6 +4,7 @@ import { AuthService } from '../services/';
 import { UserService } from '../services/';
 import { successResponseFormat } from '../../../utils/success.response.send';
 import ApiError from '../../../utils/apiError';
+import { RequestwithUser } from '../interfaces';
 // import { RequestwithUser } from '../interfaces';
 
 export class AuthController extends BaseController {
@@ -55,35 +56,23 @@ export class AuthController extends BaseController {
     
   });
 
-//   logout = this.catchAsync(async (req: Request, res: Response) => {
-//     await this.service.logout(req.user);
-//     res.status(200).send(successResponseFormat({ message: 'Logout successful.' }));
-//   });
+  logout = this.catchAsync(async (req: RequestwithUser, res: Response) => {
+    await this.service.logout(req.user);
+    res.status(200).send(successResponseFormat({ message: 'Logout successful.' }));
+  });
   
-// refresh = this.catchAsync(async (req: Request, res: Response) => {
-//     const newToken = await this.service.refreshToken(req.user);
-//     if (newToken) {
-//       res.status(200).send(successResponseFormat(newToken));
-//     } else {
-//       res.send(new ApiError({ status: 401, message: 'Invalid refresh token.' }));
-//     }
-//   });
-  
-
-//   getCurrentUser = this.catchAsync(async (req: Request, res: Response) => {
-//     const userId = req.user.id; 
-//     const user = await this.service.userService.getUserById(userId);
-//     res.status(200).send(successResponseFormat(user));
-//   });
+  refreshToken = this.catchAsync(async (req: RequestwithUser, res: Response) => {
+      const newToken = await this.service.refreshToken(req.user);
+      if (newToken) {
+        res.status(200).send(successResponseFormat(newToken));
+      } else {
+        res.send(new ApiError({ status: 401, message: 'Invalid refresh token.' }));
+      }
+    });
   
 
-// changePassword = this.catchAsync(async (req: Request, res: Response) => {
-      //Get ID from JWT
-// const id = res.locals.jwtPayload.userId;
-//     const { currentPassword, newPassword } = req.body;
-//     const userId = req.user.id; // ou tout autre moyen d'obtenir l'ID de l'utilisateur actuel
-//     await this.service.changePassword(userId, currentPassword, newPassword);
-//     res.status(200).send(successResponseFormat({ message: 'Password changed successfully.' }));
-//   });
+  
+
+
   
 }

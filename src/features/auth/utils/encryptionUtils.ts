@@ -3,8 +3,8 @@ import * as bcrypt from 'bcrypt';
 export const generateHash = async (password: string, saltRounds: number = 9): Promise<string> => {
   try {
 
-    console.log("password : ",  password)
-    console.log("saltRounds : ",  saltRounds)
+    // console.log("password : ",  password)
+    // console.log("saltRounds : ",  saltRounds)
 
     const hash = await bcrypt.hash(password, saltRounds);
     return hash as string;

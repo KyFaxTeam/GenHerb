@@ -10,7 +10,7 @@ export interface UserInterface {
     avatar?: string;
     isActive?: boolean;
     email_verified?: boolean;
-    token?: string;
+    token?: string | null;
     tempToken?: string | null;
     created_at?: Date;
     updated_at?: Date;

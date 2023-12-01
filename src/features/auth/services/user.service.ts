@@ -53,7 +53,12 @@ export class UserService extends BaseService<User> {
         return ;
     }
 
-    async getUserById(userId: number): Promise<User | null> {
+    async getAllUsers(): Promise<User[]> {
+        return await this.repository.find();
+        
+    }
+
+    async getUser(userId: number): Promise<User | null> {
         return this.repository.findOne({ where: { id: userId } });
     }
 
@@ -75,6 +80,10 @@ export class UserService extends BaseService<User> {
     async deleteUser(userId: number): Promise<void> {
         await this.repository.delete(userId);
     }
+
+    async deleteUsers(userIds: number[]): Promise<void> {
+        await this.repository.delete(userIds);
+      }
 
     async activateUser(userId: number): Promise<void> {
         await this.repository.update(userId, { is_active: true });

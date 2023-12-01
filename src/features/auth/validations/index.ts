@@ -57,9 +57,11 @@ export const forgotPasswordValidator = {
 }
 
 export const resetPasswordValisator = {
-  query: Joi.object({
+  params: Joi.object({
     token: Joi.string().required(),
+  }),
 
+  query: Joi.object({
     new_password: Joi.string().required().min(6).max(20).messages({
       'string.min': 'Password must be at least {{#limit}} characters long.',
       'string.max': 'Password must be at most {{#limit}} characters long.',
@@ -67,6 +69,21 @@ export const resetPasswordValisator = {
     }),
 })
 }
+
+export const validId = {
+  params: Joi.object({
+    id: Joi.number().required(),
+  })
+}
+
+export const deleteUsersValidator = {
+  body: Joi.object({
+    userIds: Joi.array().items(Joi.number()).required().min(1).messages({
+      'array.base': 'User IDs must be an array of numbers.',
+      'array.min': 'At least one user ID is required for deletion.',
+    }),
+  }),
+};
 
 export const verifyEmailTokenValidator = Joi.object({
     token: Joi.string().required()

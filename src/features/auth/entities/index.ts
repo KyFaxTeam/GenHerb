@@ -32,7 +32,7 @@ email_verified?: boolean;
 is_active?: boolean;
 
 @Column({ nullable: true, unique: true })
-token?: string | null;
+token?: string;
 
 @Column({ nullable: true, unique: true })
 tempToken?: string;

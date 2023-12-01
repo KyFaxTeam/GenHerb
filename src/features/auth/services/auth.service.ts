@@ -1,5 +1,5 @@
 import { UserService } from './user.service';
-import { generateToken, returnvalidateUser,  generateResetPasswordToken} from '../utils/authTokenGenerator';
+import { generateToken, returnvalidateUser,  generateResetPasswordToken, isverifyToken} from '../utils/authTokenGenerator';
 import { User } from '../entities';
 import { generateHash, verifyHash } from '../utils/encryptionUtils';
 import { EmailService } from '../../../utils/sendEmail';
@@ -34,8 +34,7 @@ export class AuthService {
   }
 
   async logout(user: User): Promise<void> {
-    user.token = ''; 
-    await this.userService.repository.save(user)
+    await this.userService.updateUser(user.id, {'token': ''})
   }
 
 
@@ -74,9 +73,9 @@ export class AuthService {
   }
 
 
-  async changePassword(userId: number, newPassword: string): Promise<User | void> {
+  async changePassword(userId: number, newPassword: string, newToken:string): Promise<User | void> {
     
-    const existingUser = await this.userService.getUserById(userId);
+    const existingUser = await this.userService.getUser(userId);
 
     if (!existingUser) {
         console.log("User with this id does not exists. ")
@@ -84,7 +83,7 @@ export class AuthService {
     }
 
     const hashedPassword = await generateHash(newPassword)
-    return await this.userService.updateUser(userId, { password: hashedPassword, tempToken: null });
+    return await this.userService.updateUser(userId, { password: hashedPassword, tempToken: null, token: newToken });
     
   }
 
@@ -105,31 +104,42 @@ export class AuthService {
   }
 
   async resetPassword(token: string, newPassword: string): Promise<string|null> {
-    
       
-    const existingUser = returnvalidateUser(token)
-    if(!existingUser){
-        return null;
+    const id = returnvalidateUser(token)
+    if (id) {
+      const existingUser = await this.userService.getUser(id)
+
+      if(existingUser){
+
+        const bool = await verifyHash(token, existingUser.tempToken as string)
+
+        if (bool) {
+          const newtoken = generateToken(existingUser)
+
+          const updateUser = await this.changePassword(existingUser.id, newPassword, newtoken)
+      
+          if (updateUser) {
+            return newtoken
+          }
+
+        }
+      }
     }
 
-    const bool = verifyHash(token, existingUser.tempToken as string)
-    if (!bool) {
-      return null;
-    }
-
-    const updateUser = await this.changePassword(existingUser.id, newPassword)
-    if (!updateUser) {
-      return null
-    }
-    
-    const newtoken = await this.refreshToken(updateUser)
-    return newtoken
+    return null
+   
   }
 
-  async refreshToken(user: User): Promise<string> {
-    const newToken = generateToken(user)
-    await this.userService.updateUser(user.id, {'token': newToken})
-    return newToken
+  async refreshToken(user: User): Promise<string | null> {
+    if (user.token) {
+      if (isverifyToken(user.token)) {
+        const newToken = generateToken(user)
+        await this.userService.updateUser(user.id, {'token': newToken})
+        
+        return newToken
+      }
+    }
+    return null
 
   }
 
