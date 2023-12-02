@@ -24,7 +24,8 @@ export class AuthService {
       if (user) {
         // Génère un token et le renvoie
         const token = generateToken(user);
-        await this.userService.updateUser(user.id, {'token': token})
+        const hashedToken = await generateHash(token)
+        await this.userService.updateUser(user.id, {'token': hashedToken})
 
         return token;
       }
@@ -34,7 +35,7 @@ export class AuthService {
   }
 
   async logout(user: User): Promise<void> {
-    await this.userService.updateUser(user.id, {'token': ''})
+    await this.userService.updateUser(user.id, {'token': null})
   }
 
 
@@ -64,7 +65,8 @@ export class AuthService {
 
     
     const token = generateToken(newUser);
-    await this.userService.updateUser(newUser.id, {'token': token})
+    const hashedToken = await generateHash(token)
+    await this.userService.updateUser(newUser.id, {'token': hashedToken})
     
       // // Exclude the 'password' property from newUser
       // const { password: excludedPassword, ...userWithoutPassword } = newUser;
@@ -75,7 +77,7 @@ export class AuthService {
 
   async changePassword(userId: number, newPassword: string, newToken:string): Promise<User | void> {
     
-    const existingUser = await this.userService.getUser(userId);
+    const existingUser = await this.userService.getUserById(userId);
 
     if (!existingUser) {
         console.log("User with this id does not exists. ")
@@ -83,7 +85,9 @@ export class AuthService {
     }
 
     const hashedPassword = await generateHash(newPassword)
-    return await this.userService.updateUser(userId, { password: hashedPassword, tempToken: null, token: newToken });
+    const hashedToken = await generateHash(newToken)
+
+    return await this.userService.updateUser(userId, { password: hashedPassword, tempToken: null, token: hashedToken });
     
   }
 
@@ -107,7 +111,7 @@ export class AuthService {
       
     const id = returnvalidateUser(token)
     if (id) {
-      const existingUser = await this.userService.getUser(id)
+      const existingUser = await this.userService.getUserById(id)
 
       if(existingUser){
 
@@ -134,7 +138,10 @@ export class AuthService {
     if (user.token) {
       if (isverifyToken(user.token)) {
         const newToken = generateToken(user)
-        await this.userService.updateUser(user.id, {'token': newToken})
+        
+        const hashedToken = await generateHash(newToken)
+
+        await this.userService.updateUser(user.id, {'token': hashedToken})
         
         return newToken
       }

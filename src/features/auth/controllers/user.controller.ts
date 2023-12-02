@@ -31,6 +31,16 @@ export class UserController extends BaseController {
     }
   });
 
+  getUserById = this.catchAsync(async (req: RequestwithUser, res: Response) => {
+    const userId = parseInt(req.params.userId)
+    const user = await this.service.getUserById(userId);
+    if (user) {
+      res.status(200).send(successResponseFormat(user));
+    } else {
+      res.send(new ApiError({ status: 404, message: 'User not found.' }));
+    }
+  });
+
   getAllUsers = this.catchAsync(async (req: Request, res: Response) => {
     const users = await this.service.getAllUsers();
     if (users) {  
@@ -51,7 +61,7 @@ export class UserController extends BaseController {
 
   deleteUser = this.catchAsync(async (req: RequestwithUser, res: Response) => {
     await this.service.deleteUser(req.user.id);
-    res.status(204).send(successResponseFormat({ message: 'User deleted successfully.' }));
+    res.status(200).send(successResponseFormat({ message: 'User deleted successfully.' }));
   });
 
   deleteUsers = this.catchAsync(async (req: RequestwithUser, res: Response) => {
@@ -62,7 +72,7 @@ export class UserController extends BaseController {
     }
 
     await this.service.deleteUsers(userIds)
-    res.status(204).send(successResponseFormat({ message: 'User deleted successfully.' }));
+    res.status(200).send(successResponseFormat({ message: 'User deleted successfully.' }));
   });
 
 

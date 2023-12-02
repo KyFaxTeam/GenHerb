@@ -18,5 +18,6 @@ export interface UserInterface {
   }
 
   export interface RequestwithUser extends ExpressRequest {
-    user: User
+    user: User,
+    token: string
   }
