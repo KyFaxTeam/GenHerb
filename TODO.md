@@ -13,6 +13,7 @@
 - Authentification
     - [ ] Register : pseudo, mail, avatar,  createdAt, updateAt, id, token
     - [ ] Login for each request with bearer Token
+    - [ ] Hash Token
   
 - Events
     - [ ] Get event statistic

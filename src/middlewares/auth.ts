@@ -21,7 +21,7 @@ export const authenticateUser = async (req: RequestwithUser, _res: Response, nex
             console.log("******** req.user **********: ", req.user)
             next();
           }
-          console.log("Il est rentré ici")
+          
             
         } 
     }

@@ -76,7 +76,7 @@ export const isverifyToken = (token: string): boolean => {
 export const returnvalidateUser = (token: string): number| null => {
   try {
     const decodedToken: any = jwt.verify(token, secretKey, { ignoreExpiration: false });
-    console.log("decodedToken: ", decodedToken)
+    // console.log("decodedToken: ", decodedToken)
     return decodedToken.userId
   } catch (error) {
     console.error(error);
