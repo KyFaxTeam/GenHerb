@@ -17,11 +17,21 @@ export const generateToken = (user: User): string => {
   const payload = generateBasePayload(user);
 
   const options = {
-    expiresIn: '1h', 
+    expiresIn: '2d', 
   };
 
   return jwt.sign(payload, secretKey, options);
   
+}
+
+export const generateAccessToken = (user: User): string => {
+  const payload = generateBasePayload(user);
+
+  const options = {
+    expiresIn: '15d',
+  };
+
+  return jwt.sign(payload, secretKey, options);
 }
 
 
@@ -56,7 +66,7 @@ export const generateEmailVerificationToken = (user: User): string => {
   const payload = generateBasePayload(user);
 
   const options = {
-    expiresIn: '24h',
+    expiresIn: '4h',
   };
 
   return jwt.sign(payload, secretKey, options);
@@ -65,7 +75,7 @@ export const generateEmailVerificationToken = (user: User): string => {
 
 export const isverifyToken = (token: string): boolean => {
   try {
-    jwt.verify(token, secretKey, { ignoreExpiration: true });
+    jwt.verify(token, secretKey, { ignoreExpiration: false });
     return true;
   } catch (error) {
     console.error(error);
@@ -73,10 +83,10 @@ export const isverifyToken = (token: string): boolean => {
   }
 }
 
-export const returnvalidateUser = (token: string): number| null => {
+export const returnvalidateUser = (token: string, exp: boolean = false): number| null => {
   try {
-    const decodedToken: any = jwt.verify(token, secretKey, { ignoreExpiration: false });
-    // console.log("decodedToken: ", decodedToken)
+    const decodedToken: any = jwt.verify(token, secretKey, { ignoreExpiration: exp });
+    // console.log(" //////////////// decodedToken: ", decodedToken)
     return decodedToken.userId
   } catch (error) {
     console.error(error);
@@ -107,6 +117,25 @@ export const getTokenFromHeader = (req: Request) => {
 };
 
 
+export const isverifyTokenAndValidDate = (token:string): boolean | null=> {
+
+  try {
+    const decodedToken: any = jwt.verify(token, secretKey);
+    // console.log("decodedToken: ", decodedToken)
+    const expirationDate = decodedToken.exp * 1000; 
+    const currentDate = new Date().getTime();
+    const threshold = 2 * 24 * 60 * 60 * 1000; // 2d in milliseconds
+
+    if (expirationDate - currentDate > threshold) {
+      return true
+    } else {
+      return false
+    }
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+}
 
 // const verifyTokenAndCheckDatabase = async (token: string): Promise<User | null> => {
 //   try {

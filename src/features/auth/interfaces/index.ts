@@ -11,7 +11,7 @@ export interface UserInterface {
     isActive?: boolean;
     email_verified?: boolean;
     token?: string | null;
-    tempToken?: string | null;
+    accessToken?: string | null;
     created_at?: Date;
     updated_at?: Date;
     
@@ -20,4 +20,20 @@ export interface UserInterface {
   export interface RequestwithUser extends ExpressRequest {
     user: User,
     token: string
+  }
+
+  export interface SafeUserInterface {
+    pseudo: string;
+    email: string;
+    roles?: AllowedRoles;
+    avatar?: string;
+    isActive?: boolean;
+    email_verified?: boolean;
+    created_at?: Date;
+    updated_at?: Date;
+    
+  }
+  export const createSafeUser = (user: User): SafeUserInterface => {
+    const { password, token, accessToken, ...safeUser } = user;
+    return safeUser;
   }

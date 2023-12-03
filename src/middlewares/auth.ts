@@ -3,11 +3,13 @@ import { RequestwithUser } from "../features/auth/interfaces";
 import ApiError from "../utils/apiError";
 import {getTokenFromHeader, returnvalidateUser } from "../features/auth/utils/authTokenGenerator"
 import { UserService } from "../features/auth/services";
-import { verifyHash } from "../features/auth/utils/encryptionUtils";
+// import { verifyHash } from "../features/auth/utils/encryptionUtils";
 
 
 export const authenticateUser = async (req: RequestwithUser, _res: Response, next: NextFunction) => {
   const token = getTokenFromHeader(req);
+
+  // console.log("req.path : ",req.path)
 
   if (!token) {
       // console.log("Token is missing.");
@@ -15,7 +17,16 @@ export const authenticateUser = async (req: RequestwithUser, _res: Response, nex
       return next(error);
   }
 
-  const userId = returnvalidateUser(token);
+  let userId: number | null
+  if (req.path.endsWith("/refresh-token")) {
+    userId = returnvalidateUser(token, true);
+    // console.log("********************userId: Endswith *****************************: ", userId)
+
+  } else {
+    userId = returnvalidateUser(token);
+    // console.log("********************userId *****************************: ", userId)
+  }
+  
 
   if (!userId) {
       // console.log("Invalid token.");
@@ -63,8 +74,13 @@ export const verifyOwnership = async (req: RequestwithUser, res: Response, next:
       const error = new ApiError({ status: 403, message: 'Invalid User token' });
       return next(error);
     }
+    
+    // console.log("req.token : ",req.token)
+    // console.log("userToken : ", userToken)
+    // const isToken = await verifyHash(req.token, userToken)
+    const isToken = req.token === userToken
 
-    const isToken = await verifyHash(req.token, userToken)
+    // console.log("Is Valid Token : ", isToken)
 
     // Vérifie si l'utilisateur est le propriétaire du compte
     if (isToken) {

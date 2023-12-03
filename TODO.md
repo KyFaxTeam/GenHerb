@@ -11,9 +11,10 @@
 - [ ] create a table for all rubrics in database 
 
 - Authentification
-    - [ ] Register : pseudo, mail, avatar,  createdAt, updateAt, id, token
-    - [ ] Login for each request with bearer Token
-    - [ ] Hash Token
+    - [X] Register : pseudo, mail, avatar,  createdAt, updateAt, id, token
+    - [X] Login for each request with bearer Token
+    - [X] Hash Token
+    - [] Générer un token qui ne s'épuise pas ou voir comment faire le update   
   
 - Events
     - [ ] Get event statistic
