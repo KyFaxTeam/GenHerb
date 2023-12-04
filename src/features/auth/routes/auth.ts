@@ -3,11 +3,11 @@ import BaseRoute from "../../../abstracts/route.base";
 import { AuthController } from "../controllers";
 import { authenticateUser, requiredRole, verifyOwnership } from "../../../middlewares/auth";
 import { forgotPasswordValidator, 
-    loginValidator, 
-    resetPasswordValisator, 
-    registrationValidator,
-    validId
-} from "../validations";
+         loginValidator, 
+         resetPasswordValisator, 
+         registrationValidator,
+        } from "../validations";
+
 
 
 
@@ -29,9 +29,9 @@ export default class AuthRoute extends BaseRoute {
         this.route.post("/login", this.validator(loginValidator), this.controller.login);
         this.route.post("/forgot-password", this.validator(forgotPasswordValidator), this.controller.forgotPassword);
         // route to verify reset password link
-        this.route.get("/reset-password/:token", this.validator(resetPasswordValisator), this.controller.resetPassword);
-        // this.route.post('/refresh-token', [authenticateUser] as any, this.controller.refreshToken)
-        this.route.post("/logout/",[authenticateUser] as any, this.controller.logout);
+        this.route.get('/reset-password/:token', this.validator(resetPasswordValisator), this.controller.resetPassword)
+        this.route.post('/refresh-token', [authenticateUser] as any, this.controller.refreshToken)
+        this.route.post('/logout/',[authenticateUser] as any, [verifyOwnership] as any, this.controller.logout)
        
     }
 

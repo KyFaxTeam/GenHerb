@@ -18,6 +18,7 @@ export const generateHash = async (password: string, saltRounds: number = 9): Pr
 export const verifyHash = async (password: string, hash: string): Promise<boolean> => {
   try {
     const result = await bcrypt.compare(password, hash);
+    // console.log("result : ", result)
     return result as boolean;
   } catch (error) {
     console.log(error);
@@ -25,3 +26,4 @@ export const verifyHash = async (password: string, hash: string): Promise<boolea
     
   }
 };
+

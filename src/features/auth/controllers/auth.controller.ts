@@ -5,7 +5,7 @@ import { UserService } from '../services/';
 import { successResponseFormat } from '../../../utils/success.response.send';
 import ApiError from '../../../utils/apiError';
 import { RequestwithUser } from '../interfaces';
-// import { RequestwithUser } from '../interfaces';
+
 
 export class AuthController extends BaseController {
 
@@ -16,9 +16,9 @@ export class AuthController extends BaseController {
   register = this.catchAsync(async (req: Request, res: Response) => {
     // console.log("***userData*** : ", req.body)
     
-    const user = await this.service.register(req.body);
-    if (user) {
-      res.status(201).send(successResponseFormat(user));
+    const token = await this.service.register(req.body);
+    if (token) {
+      res.status(201).send(successResponseFormat({ token }));
     } else {
       res.send(new ApiError({ status: 400, message: 'Failed to register user.' }));
     }
@@ -47,9 +47,9 @@ export class AuthController extends BaseController {
   resetPassword = this.catchAsync(async (req: Request, res: Response) => {
     const { token } = req.params;
     const newPassword = req.query.new_password
-    const user = await this.service.resetPassword(token, newPassword);
-    if (user) {
-        res.status(200).send(successResponseFormat({ user }));
+    const newToken = await this.service.resetPassword(token, newPassword);
+    if (newToken) {
+        res.status(200).send(successResponseFormat({ newToken }));
     } else {
       res.send(new ApiError({ status: 401, message: 'Password reset error.' }));
     }

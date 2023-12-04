@@ -1,5 +1,5 @@
 import { UserService } from './user.service';
-import { generateToken, returnvalidateUser,  generateResetPasswordToken, isverifyToken} from '../utils/authTokenGenerator';
+import { generateToken, returnvalidateUser,  generateResetPasswordToken, isverifyToken, generateAccessToken, isverifyTokenAndValidDate} from '../utils/authTokenGenerator';
 import { User } from '../entities';
 import { generateHash, verifyHash } from '../utils/encryptionUtils';
 import { EmailService } from '../../../utils/sendEmail';
@@ -24,7 +24,10 @@ export class AuthService {
       if (user) {
         // Génère un token et le renvoie
         const token = generateToken(user);
-        await this.userService.updateUser(user.id, {'token': token})
+        // const hashedToken = await generateHash(token)
+        const accessToken = generateAccessToken(user)
+
+        await this.userService.updateUser(user.id, {'token': token, 'accessToken': accessToken})
 
         return token;
       }
@@ -34,7 +37,7 @@ export class AuthService {
   }
 
   async logout(user: User): Promise<void> {
-    await this.userService.updateUser(user.id, {'token': ''})
+    await this.userService.updateUser(user.id, {'token': null, 'accessToken': null})
   }
 
 
@@ -64,7 +67,9 @@ export class AuthService {
 
     
     const token = generateToken(newUser);
-    await this.userService.updateUser(newUser.id, {'token': token})
+    // const hashedToken = await generateHash(token)
+    const accessToken = generateAccessToken(newUser)
+    await this.userService.updateUser(newUser.id, {'token': token, 'accessToken': accessToken})
     
       // // Exclude the 'password' property from newUser
       // const { password: excludedPassword, ...userWithoutPassword } = newUser;
@@ -73,9 +78,9 @@ export class AuthService {
   }
 
 
-  async changePassword(userId: number, newPassword: string, newToken:string): Promise<User | void> {
+  async changePassword(userId: number, newPassword: string, newToken:string, accessToken: string): Promise<User | void> {
     
-    const existingUser = await this.userService.getUser(userId);
+    const existingUser = await this.userService.getUserById(userId);
 
     if (!existingUser) {
         console.log("User with this id does not exists. ")
@@ -83,7 +88,9 @@ export class AuthService {
     }
 
     const hashedPassword = await generateHash(newPassword)
-    return await this.userService.updateUser(userId, { password: hashedPassword, tempToken: null, token: newToken });
+    // const hashedToken = await generateHash(newToken)
+
+    return await this.userService.updateUser(userId, { password: hashedPassword, accessToken: accessToken, token: newToken });
     
   }
 
@@ -96,7 +103,8 @@ export class AuthService {
     }
 
     const tempToken = generateResetPasswordToken(user);
-    await this.userService.updateUser(user.id, {'tempToken': await generateHash(tempToken)})
+    // const hashedToken = await generateHash(tempToken)
+    await this.userService.updateUser(user.id, {'accessToken': tempToken})
 
     const sendEmail = new EmailService()
     return await sendEmail.sendResetPasswordEmail(email, tempToken, newPassword)
@@ -107,16 +115,17 @@ export class AuthService {
       
     const id = returnvalidateUser(token)
     if (id) {
-      const existingUser = await this.userService.getUser(id)
+      const existingUser = await this.userService.getUserById(id)
 
       if(existingUser){
 
-        const bool = await verifyHash(token, existingUser.tempToken as string)
+        const bool = await verifyHash(token, existingUser.accessToken as string)
 
         if (bool) {
+          const accessToken = generateAccessToken(existingUser)
           const newtoken = generateToken(existingUser)
 
-          const updateUser = await this.changePassword(existingUser.id, newPassword, newtoken)
+          const updateUser = await this.changePassword(existingUser.id, newPassword, newtoken, accessToken)
       
           if (updateUser) {
             return newtoken
@@ -131,11 +140,22 @@ export class AuthService {
   }
 
   async refreshToken(user: User): Promise<string | null> {
-    if (user.token) {
-      if (isverifyToken(user.token)) {
+    if (user.accessToken) {
+      const bool = isverifyTokenAndValidDate(user.accessToken)
+      if (bool !== null) {
+
         const newToken = generateToken(user)
-        await this.userService.updateUser(user.id, {'token': newToken})
-        
+        // const hashedToken = await generateHash(newToken)
+
+        if (bool) {
+          await this.userService.updateUser(user.id, {'token': newToken})
+          console.log('Token access not expired')
+        } else {
+          console.log('Token access is expired')
+          const accessToken = generateAccessToken(user)
+          await this.userService.updateUser(user.id, {'token': newToken, 'accessToken': accessToken})
+        }
+           
         return newToken
       }
     }
