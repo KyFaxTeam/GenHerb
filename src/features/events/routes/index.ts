@@ -30,13 +30,13 @@ export default class ArticleRoute extends BaseRoute {
         this.route.get("", this.validator(EventWithIdScheme), this.controller.eventWithId);
         
         // * 4 - GET request to retrieve static one specific event 
-        this.route.get("/statistic", this.validator(getStatisticScheme), this.controller.statistic);
+        // this.route.get("/statistic", this.validator(getStatisticScheme), this.controller.statistic);
         
         // * 5 - GET request to retrieve a player's response
-        this.route.get("/user-response", this.validator(getUserResponseScheme), this.controller.userResponse);
+        // this.route.get("/user-response", this.validator(getUserResponseScheme), this.controller.userResponse);
         
         // * 6 -POST 
-        this.route.post("/user-post", this.validator(postUserResponseScheme), this.controller.postUserResponse);
+        // this.route.post("/user-post", this.validator(postUserResponseScheme), this.controller.postUserResponse);
     }
 
     public init() { 

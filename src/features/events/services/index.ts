@@ -4,16 +4,15 @@ import { dbSource } from "../../../config/data.source";
 import ApiError from "../../../utils/apiError";
 import { Event } from "../entities";
 import * as dotenv from "dotenv";
-import { StatisticsForEvents } from "../entities/statistic";
 import config from "../../../config";
 
 
 dotenv.config();
 
-export class EventService extends BaseService {
-    private repoEvent = dbSource.getRepository(Event);
-    private repoStatistic = dbSource.getRepository(StatisticsForEvents);
-    constructor() {super("events", Event);}
+export class EventService extends BaseService<Event> {
+    private repo = dbSource.getRepository(Event);
+    // private repoStatistic = dbSource.getRepository(StatisticsForEvents);
+    public constructor() {super("events", Event);}
 
 
     /**
@@ -34,8 +33,8 @@ export class EventService extends BaseService {
                     ? "events.createdAt < :currentDate and events.expireAt > :currentDate" 
                     : "events.createdAt > :currentDate" ;
         
-        const result  = await this.repoEvent.createQueryBuilder("events")
-            .select(["events.__id", "events.name", "events.image","events.details", "events.createdAt", "events.expireAt"])
+        const result  = await this.repo.createQueryBuilder("events")
+            .select(["events.id", "events.name", "events.image","events.details", "events.createdAt", "events.expireAt"])
             .where(whereQuery, {currentDate : currentDate})
             .limit(config.limitQuiz)
             .getMany() ; // Execute the query and retrieve the result as an array of events.
@@ -48,13 +47,14 @@ export class EventService extends BaseService {
     }
     
     // * 2 - 
-    public async getEventStartToPlay(id: string): Promise<any> {
+    public async getEventStartToPlay(id: string, pseudo: string): Promise<any> {
+        
         // Get the current date and time.
         const currentDate = new Date() ;
 
-        const result = await this.repoEvent.createQueryBuilder("events")
+        const result = await this.repo.createQueryBuilder("events")
             .where("events.createdAt < :currentDate and events.expireAt > :currentDate" , {currentDate : currentDate})
-            .andWhere("__id = :id",{id : id})
+            .andWhere("id = :id",{id : id})
             .getOne() ;
 
         if (!result) {
@@ -65,7 +65,7 @@ export class EventService extends BaseService {
 
     // * 3 - 
     public async getEventWithId(id: number): Promise<any> {
-        const result = await this.repoEvent.findBy({id : id}) ;
+        const result = await this.repo.findBy({id : id}) ;
 
         if (!result) {
             throw new ApiError({status : httpStatus.NOT_FOUND, message: `Events with ID ${id} not found`});
@@ -79,18 +79,18 @@ export class EventService extends BaseService {
      * @returns 
      */
     // * 4 - 
-    public async getStatistic(id:string): Promise<any> {
-        const result = await this.repoStatistic.createQueryBuilder("statisticsForEvents")
-            .select(["statisticsForEvents.score", "statisticsForEvents.correctAnswers", "statisticsForEvents.incorrectAnswers", "statisticsForEvents.playerPseudo","statisticsForEvents.timeToPlay", "statisticsForEvents.createdAt"])
-            .where("statisticsForEvents.eventId = :id", {id : id})
-            .orderBy("statisticsForEvents.score", "DESC")
-            .getMany();
+    // public async getStatistic(id:string): Promise<any> {
+    //     const result = await this.repoStatistic.createQueryBuilder("statisticsForEvents")
+    //         .select(["statisticsForEvents.score", "statisticsForEvents.correctAnswers", "statisticsForEvents.incorrectAnswers", "statisticsForEvents.playerPseudo","statisticsForEvents.timeToPlay", "statisticsForEvents.createdAt"])
+    //         .where("statisticsForEvents.eventId = :id", {id : id})
+    //         .orderBy("statisticsForEvents.score", "DESC")
+    //         .getMany();
         
-        if (!result ) {
-            throw new ApiError({status : httpStatus.NOT_FOUND, message: `This ${id} not found`});
-        }
-        return result; 
-    }
+    //     if (!result ) {
+    //         throw new ApiError({status : httpStatus.NOT_FOUND, message: `This ${id} not found`});
+    //     }
+    //     return result; 
+    // }
 
     /**
      * 
@@ -98,17 +98,17 @@ export class EventService extends BaseService {
      * @returns 
      */
     // * 5 - 
-    public async getUserResponse(pseudo: string): Promise<any> {
+    // public async getUserResponse(pseudo: string): Promise<any> {
 
-        const result = await this.repoStatistic.createQueryBuilder("statisticsForEvents")
-            .select(["statisticsForEvents.response", "statisticsForEvents.correctAnswers", "statisticsForEvents.incorrectAnswers", "statisticsForEvents.timeToPlay", "statisticsForEvents.createdAt"])
-            .where("statisticsForEvents.playerPseudo = :pseudo", {pseudo : pseudo}).getOne();
+    //     const result = await this.repoStatistic.createQueryBuilder("statisticsForEvents")
+    //         .select(["statisticsForEvents.response", "statisticsForEvents.correctAnswers", "statisticsForEvents.incorrectAnswers", "statisticsForEvents.timeToPlay", "statisticsForEvents.createdAt"])
+    //         .where("statisticsForEvents.playerPseudo = :pseudo", {pseudo : pseudo}).getOne();
     
-        if (!result) {
-            throw new ApiError({status : httpStatus.NOT_FOUND, message: `This ${pseudo} not found for this event`});
-        }
-        return result; 
-    }
+    //     if (!result) {
+    //         throw new ApiError({status : httpStatus.NOT_FOUND, message: `This ${pseudo} not found for this event`});
+    //     }
+    //     return result; 
+    // }
 
     /**
      * 
@@ -116,9 +116,13 @@ export class EventService extends BaseService {
      * @returns 
      */
     // * 6 - 
-    public async postUserResponse(data : object): Promise<any> {
-        const entity = this.repoStatistic.create(data) ;
-        await this.repoStatistic.save(entity);
-        return ;
-    }
+    // public async postUserResponse(data : object): Promise<any> {
+    //     const entity = this.repoStatistic.create(data) ;
+    //     await this.repoStatistic.save(entity);
+    //     return ;
+    // }
 }
+
+// insert into quiz(question, answer, thematic, "subThematic", level, points, times) 
+// values ('Quel film a remporté l''Oscar du meilleur film en 2019 ? ',
+// '{"Green Book"}', 'Cinema', 'Oscar', 'Normal', 3, 10)
