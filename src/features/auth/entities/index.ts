@@ -35,7 +35,8 @@ export class User extends BaseEntity {
     token?: string;
 
 @Column({ nullable: true, unique: true })
-    tempToken?: string;
+accessToken?: string;
+
 
 @Column({
     type: "enum",
