@@ -9,6 +9,7 @@ import { Quiz } from "../entities";
 
 export class QuizService extends BaseService<Quiz> {
 
+    private repo = dbSource.getRepository(Quiz);
     public constructor() {
         super("quiz", Quiz);
     }
@@ -24,7 +25,7 @@ export class QuizService extends BaseService<Quiz> {
 
         const result = await this.repo
             .createQueryBuilder("quiz")
-            .select(["quiz.id", "quiz.question", "quiz.answer", "quiz.otheranswers", "quiz.points", "quiz.times"])
+            .select(["quiz.id", "quiz.question", "quiz.answer", "quiz.points", "quiz.times"])
             .where("quiz.thematic = :thematic", {thematic: thematic })
             .orderBy("RANDOM()")
             .take(config.limitQuiz).getMany(); 

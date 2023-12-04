@@ -27,7 +27,7 @@ export default class QuizRoute extends BaseRoute {
          * Route to retrieve all distinct rubrics.
          * Controller method: 'getAllRubrics' handles the logic for fetching all distinct rubrics.
          */
-        this.route.get("/allRubrics", this.controller.getAllRubrics);
+        this.route.get("/allThematics", this.controller.getAllRubrics);
     }
 
     public init(): void {

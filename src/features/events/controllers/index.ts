@@ -49,34 +49,34 @@ export default class EventController extends BaseController {
     );
 
     // * 4 - 
-    public statistic = this.catchAsync(
-        async(req: Request, res: Response) => {
-            const {id} = req.query ;
-            const result = await this.service.getStatistic(id);
+    // public statistic = this.catchAsync(
+    //     async(req: Request, res: Response) => {
+    //         const {id} = req.query ;
+    //         const result = await this.service.getStatistic(id);
 
-            // Send the result as the response.
-            res.send(successResponseFormat(result));
-        });
+    //         // Send the result as the response.
+    //         res.send(successResponseFormat(result));
+    //     });
 
     // * 5 - 
-    public userResponse = this.catchAsync(
-        async(req: Request, res: Response) => {
-            const {pseudo} = req.query ;
-            const result = await this.service.getUserResponse(pseudo);
+    // public userResponse = this.catchAsync(
+    //     async(req: Request, res: Response) => {
+    //         const {pseudo} = req.query ;
+    //         const result = await this.service.getUserResponse(pseudo);
 
-            // Send the result as the response.
-            res.send(successResponseFormat(result));
-        }
-    );
+    //         // Send the result as the response.
+    //         res.send(successResponseFormat(result));
+    //     }
+    // );
     
     // * 6 - 
-    public postUserResponse = this.catchAsync(
-        async(req: Request, res: Response) => {
-            const data = req.body;
-            await this.service.postUserResponse(data);
+    // public postUserResponse = this.catchAsync(
+    //     async(req: Request, res: Response) => {
+    //         const data = req.body;
+    //         await this.service.postUserResponse(data);
 
-            res.send(successResponseFormat({message : "Successful Register"}));
-        }
-    );
+    //         res.send(successResponseFormat({message : "Successful Register"}));
+    //     }
+    // );
 
 }
