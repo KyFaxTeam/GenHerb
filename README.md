@@ -15,13 +15,12 @@ This endpoint is used to fetch a quiz for a single player.
 #### Request
 - **Headers**
   - `Content-Type`: application/json
-  - 
+  
 - **Query Parameters**
-  - params :
+  - query :
     - rubric : name of rubric whose want get quiz
 
 ### Response
-
 - **Success Response**
   - **Status Code**: 200 OK
   - **Body**:
@@ -33,13 +32,14 @@ This endpoint is used to fetch a quiz for a single player.
                 "rubric": "Afrique",
                 "quiz": 
                 [
-                
-                {
-                    "id": 2,
-                    "question": "Quelle est la langue la plus largement parlée en Afrique, avec plus de 200 millions de locuteurs ?",
-                    "answer": "Le swahili",
+                  {
+                    "id": 1,
+                    "question": "Quel pays africain a été le premier à envoyer une sonde spatiale sur la lune en 2019, marquant ainsi une avancée significative dans l'exploration spatiale du continent ?",
+                    "answer": "L'Afrique du Sud",
+                    "points": 2,
+                    "times": 10,
                     "otheranswers": null
-                }, 
+                  }, 
                 ... ]
                 }
         }
@@ -50,32 +50,20 @@ This endpoint is used to fetch a quiz for a single player.
   - **Status Code**: 400 Bad Request
   - **Body**:
     ```json
-    {
-        "success": true,
-        "result": 
         {
-            "rubric": "Afriqu",
-            "quiz": 
-            [
-            
-            ]
+          "success": false,
+          "error": 
+          {
+            "status": 400,
+            "message": "This rubric doesn't exist"
+          }
         }
-    }
-    ```
-
-  - **Status Code**: 500 Internal Server Error
-  - **Body**:
-    ```json
-        {
-        "success": false,
-        "result": "Internal server error. Please try again later.
-    }
     ```
 
 ### Example Usage
 
 ```bash
-curl -X GET http://api.example.com/quiz
+http://localhost:3001/geh/api/v1/quiz?rubric=Afrique
 ```
 
 ---
@@ -100,11 +88,7 @@ This endpoint is used to retrieve all distinct rubrics.
 
 ### Request Body Example
 
-```json
-{
-  // Your request body here (if required)
-}
-```
+
 
 ### Response
 
@@ -112,20 +96,30 @@ This endpoint is used to retrieve all distinct rubrics.
 
   - **Status Code**: 200 OK
   - **Body**:
-    ```json
+  ```json
     {
-      "rubrics": ["a", "b", "c"]
+      "success": true,
+      "result": 
+      [
+        "Afrique",
+        "Cinéma"
+      ]
     }
-    ```
+  ```
 
 - **Error Responses**
 
-  - **Status Code**: 500 Internal Server Error
+  - **Status Code**: 404 Not found
   - **Body**:
     ```json
-    {
-      "error": "Internal server error. Please try again later."
-    }
+      {
+        "success": false,
+        "error": 
+        {
+          "status": 404,
+          "message": "Request doest not exist"
+        }
+      }
     ```
 
 ### Example Usage
@@ -134,6 +128,7 @@ This endpoint is used to retrieve all distinct rubrics.
 curl -X GET http://api.example.com/quiz/allRubrics
 ```
 
----
+--
 
-Feel free to customize this documentation based on the actual functionality and requirements of your API. Include any additional details, such as authentication requirements or specific use cases.
+# [Event](./readme.event.md)
+

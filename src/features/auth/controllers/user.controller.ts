@@ -25,6 +25,7 @@ export class UserController extends BaseController {
   getUser = this.catchAsync(async (req: RequestwithUser, res: Response) => {
     // const user = await this.service.getUser(req.user.id);
     if (req.user) {
+
       res.status(200).send(successResponseFormat(createSafeUser(req.user)));
     } else {
       res.send(new ApiError({ status: 404, message: 'User not found.' }));
@@ -36,6 +37,7 @@ export class UserController extends BaseController {
     const user = await this.service.getUserById(userId);
     if (user) {
       res.status(200).send(successResponseFormat(createSafeUser(user)));
+
     } else {
       res.send(new ApiError({ status: 404, message: 'User not found.' }));
     }
