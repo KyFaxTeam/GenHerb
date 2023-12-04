@@ -3,32 +3,53 @@ import { RequestwithUser } from "../features/auth/interfaces";
 import ApiError from "../utils/apiError";
 import {getTokenFromHeader, returnvalidateUser } from "../features/auth/utils/authTokenGenerator"
 import { UserService } from "../features/auth/services";
+// import { verifyHash } from "../features/auth/utils/encryptionUtils";
 
 
 export const authenticateUser = async (req: RequestwithUser, _res: Response, next: NextFunction) => {
-    const token = getTokenFromHeader(req) ;
-    console.log("token: ", token)
-    if (token) {
-        const userId = returnvalidateUser(token)
-        console.log("user: ", userId)
+  const token = getTokenFromHeader(req);
 
-        if (userId) {
-          const service = new UserService()
-          const user = await service.getUser(userId)
+  // console.log("req.path : ",req.path)
 
-          if (user) {
-            req.user = user;
-            console.log("******** req.user **********: ", req.user)
-            next();
-          }
-          console.log("Il est rentré ici")
-            
-        } 
-    }
-    const error = new ApiError({ status: 403, message: 'Token or User is invalid' });
-    next(error)
+  if (!token) {
+      // console.log("Token is missing.");
+      const error = new ApiError({ status: 403, message: 'Token is missing' });
+      return next(error);
+  }
 
-  };
+  let userId: number | null
+  if (req.path.endsWith("/refresh-token")) {
+    userId = returnvalidateUser(token, true);
+    // console.log("********************userId: Endswith *****************************: ", userId)
+
+  } else {
+    userId = returnvalidateUser(token);
+    // console.log("********************userId *****************************: ", userId)
+  }
+  
+
+  if (!userId) {
+      // console.log("Invalid token.");
+      const error = new ApiError({ status: 403, message: 'Invalid token' });
+      return next(error);
+  }
+
+  const service = new UserService();
+  const user = await service.getUserById(userId);
+
+  if (!user) {
+      // console.log("User not found.");
+      const error = new ApiError({ status: 403, message: 'User not found' });
+      return next(error);
+  }
+
+  req.user = user;
+  req.token = token;
+
+  // console.log("Authentication successful.");
+  next();
+};
+
 
 
 
@@ -47,17 +68,26 @@ export const requiredRole = (role: string) => {
 };
 
 
-export const verifyOwnership = (req: RequestwithUser, res: Response, next: NextFunction) => {
-    const userIdFromToken = req.user.id; 
-  
-    // Récupère l'ID du compte à partir des paramètres de la requête, par exemple, dans l'URL
-    const accountId = parseInt(req.params.userId, 10)
-  
+export const verifyOwnership = async (req: RequestwithUser, res: Response, next: NextFunction) => {
+    const userToken = req.user.token
+    if (!userToken) {
+      const error = new ApiError({ status: 403, message: 'Invalid User token' });
+      return next(error);
+    }
+    
+    // console.log("req.token : ",req.token)
+    // console.log("userToken : ", userToken)
+    // const isToken = await verifyHash(req.token, userToken)
+    const isToken = req.token === userToken
+
+    // console.log("Is Valid Token : ", isToken)
+
     // Vérifie si l'utilisateur est le propriétaire du compte
-    if (userIdFromToken === accountId) {
+    if (isToken) {
       next();
     } else {
-      res.status(403).json({ message: "Unhautorized Action" });
+      const error = new ApiError({ status: 403, message: 'Unauthorized Action' });
+      next(error);
     }
   };
 

@@ -35,7 +35,7 @@ is_active?: boolean;
 token?: string;
 
 @Column({ nullable: true, unique: true })
-tempToken?: string;
+accessToken?: string;
 
 @Column({
   type: 'enum',

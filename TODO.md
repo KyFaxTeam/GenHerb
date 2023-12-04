@@ -9,6 +9,12 @@
 - [ ] create a table for all rubrics in database 
 
 - Authentification
+
+    - [X] Register : pseudo, mail, avatar,  createdAt, updateAt, id, token
+    - [X] Login for each request with bearer Token
+    - [X] Hash Token
+    - [] Générer un token qui ne s'épuise pas ou voir comment faire le update   
+
     - [X] Register 
     - [X] Login for each request with bearer Token
     - [ ] test user

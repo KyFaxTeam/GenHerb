@@ -58,7 +58,7 @@ export class UserService extends BaseService<User> {
         
     }
 
-    async getUser(userId: number): Promise<User | null> {
+    async getUserById(userId: number): Promise<User | null> {
         return this.repository.findOne({ where: { id: userId } });
     }
 
