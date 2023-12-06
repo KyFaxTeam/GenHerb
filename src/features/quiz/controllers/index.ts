@@ -1,4 +1,5 @@
 import BaseController from "../../../abstracts/controller.base";
+import config from "../../../config";
 import { successResponseFormat } from "../../../utils/success.response.send";
 import { QuizService } from "../services";
 import { Request, Response } from "express";
@@ -16,7 +17,7 @@ export default class QuizController extends BaseController {
         const result = await this.service.getQuiz(thematic as string) ;
 
         // TODO: format your return result
-        res.send(successResponseFormat({thematic : thematic, quiz : result}));
+        res.send(successResponseFormat({thematic : thematic, numberOfQuestions: config.limitQuiz, quiz : result}));
     });
 
     public getAllRubrics = this.catchAsync(async(req: Request, res: Response) => {
