@@ -1,0 +1,30 @@
+import BaseRoute from "../../../abstracts/route.base";
+import QuizController from "../controllers";
+import { getQuestionnaireScheme } from "../validations";
+/**
+ * I am a route for the quiz feature
+ *
+ * I am responsible for initializing the quiz feature's routes
+ *
+ *
+ * @extends BaseRoute
+ */
+export default class QuizRoute extends BaseRoute {
+    constructor(app) {
+        super(app, "/geh/api/v1/quiz", new QuizController());
+        /**
+         * Route to handle fetching a quiz for a single player.
+         * Middleware: Validator to validate the request against the 'getQuestionnaireScheme'.
+         * Controller method: 'getQuizForSinglePlayer' handles the logic for retrieving the quiz.
+         */
+        this.route.get("", this.validator(getQuestionnaireScheme), this.controller.getQuizForSinglePlayer);
+        /**
+         * Route to retrieve all distinct rubrics.
+         * Controller method: 'getAllRubrics' handles the logic for fetching all distinct rubrics.
+         */
+        this.route.get("/allThematics", this.controller.getAllRubrics);
+    }
+    init() {
+        this.app.use(this.path, this.route);
+    }
+}

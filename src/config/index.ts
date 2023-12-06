@@ -15,7 +15,7 @@ import { User } from "../features/auth/entities";
 import { Event } from "../features/events/entities";
 import { StatsEvent } from "../features/stats_event/entities";
 
-dotenv.config({ path  : path.join(__dirname, "../../.env.dev")});
+dotenv.config();
 // { path  : path.join(__dirname, "../../.env.dev")}
 class Config {
 

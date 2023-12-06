@@ -1,0 +1,42 @@
+import httpStatus from "http-status";
+import { BaseService } from "../../../abstracts/service.base";
+import config from "../../../config";
+import { dbSource } from "../../../config/data.source";
+import ApiError from "../../../utils/apiError";
+import { Quiz } from "../entities";
+export class QuizService extends BaseService {
+    repo = dbSource.getRepository(Quiz);
+    constructor() {
+        super("quiz", Quiz);
+    }
+    /**
+     *
+     * @param {string} thematic
+     * @param {number} limit
+     * @return {Promise}
+    */
+    async getQuiz(thematic) {
+        const result = await this.repo
+            .createQueryBuilder("quiz")
+            .select(["quiz.id", "quiz.question", "quiz.answer", "quiz.points", "quiz.times"])
+            .where("quiz.thematic = :thematic", { thematic: thematic })
+            .orderBy("RANDOM()")
+            .take(config.limitQuiz).getMany();
+        // if thematic doesn't exist
+        if (result.length == 0) {
+            throw new ApiError({ status: httpStatus.BAD_REQUEST, message: "This thematic doesn't exist" });
+        }
+        return result;
+    }
+    /**
+     * I select a distinct value in column 'thematic'
+     * @returns
+     */
+    async getAllRubrics() {
+        const result = await this.repo.createQueryBuilder("quiz")
+            .select("DISTINCT(quiz.thematic)").getRawMany();
+        return result.map(result => result.thematic);
+    }
+    async getStatisticForPlayers() { }
+    async updateInfo() { }
+}
