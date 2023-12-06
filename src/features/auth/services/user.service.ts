@@ -14,10 +14,10 @@ export class UserService extends BaseService<User> {
     }
 
     async createUser(user:Partial<UserInterface>) : Promise<User> {
-        const { pseudo, email, password, avatar, email_verified, roles } = user; 
+        const { pseudo, email, password, avatar, country, age, email_verified, roles } = user; 
 
-        if (!pseudo || !email || !password) {
-            throw new ApiError({ status: 400, message: 'Pseudo, email, and password are required fields 1111.' })
+        if (!pseudo || !email || !password || !country || !age) {
+            throw new ApiError({ status: 400, message: 'Pseudo, email, country, age, password are required fields .' })
         }
 
         // Hash the password before storing it 
@@ -28,9 +28,11 @@ export class UserService extends BaseService<User> {
         const userAvatar = avatar || gravatar.url(email, {s: '100', r: 'x', 'd': 'retro'}, true);
 
         const newUser = this.repository.create({
-            pseudo,
-            email, 
+            pseudo : pseudo,
+            email : email, 
             password: hashedPassword, 
+            country: country,
+            age: age,
             avatar: userAvatar || '', 
             email_verified: email_verified || false,
             roles: roles || 'user', 

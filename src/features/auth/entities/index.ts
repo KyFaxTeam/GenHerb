@@ -14,16 +14,24 @@ export class User extends BaseEntity {
       id!: number;
 
 @Column({unique: true})
-    pseudo!: string;
+  pseudo!: string;
 
 @Column({unique: true})
-    email!: string;
+  email!: string;
+
 
 @Column()
-    password!: string;
+  country!: string;
 
 @Column()
-    avatar?: string;
+  age!: number
+
+@Column()
+  password!: string;
+
+@Column()
+  avatar?: string;
+
 
 @Column({ default: false })
     email_verified?: boolean;

@@ -6,6 +6,8 @@ export interface UserInterface {
     pseudo: string;
     email: string;
     password: string;
+    country: string;
+    age: number;
     roles?: AllowedRoles;
     avatar?: string;
     isActive?: boolean;
@@ -25,6 +27,8 @@ export interface UserInterface {
   export interface SafeUserInterface {
     pseudo: string;
     email: string;
+    country: string;
+    age: number;
     roles?: AllowedRoles;
     avatar?: string;
     isActive?: boolean;
