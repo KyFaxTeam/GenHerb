@@ -1,58 +1,61 @@
 // src/models/User.ts
 
 import { Entity, 
-  PrimaryGeneratedColumn, 
-  Column, BaseEntity, 
-  CreateDateColumn, 
-  UpdateDateColumn } from 'typeorm';
+    PrimaryGeneratedColumn, 
+    Column, BaseEntity, 
+    CreateDateColumn, 
+    UpdateDateColumn } from "typeorm";
 
-type AllowedRoles = 'user' | 'admin' | 'moderator' | 'editor' | 'guest';
+type AllowedRoles = "user" | "admin" | "moderator" | "editor" | "guest";
 
 @Entity()
 export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
-  id!: number;
+      id!: number;
 
-@Column({ unique: true })
-pseudo!: string;
+@Column({unique: true})
+  pseudo!: string;
 
-@Column()
-country!: string;
+@Column({unique: true})
+  email!: string;
 
-@Column()
-age!: number
 
 @Column()
-email!: string;
+  country!: string;
 
 @Column()
-password!: string;
+  age!: number
 
 @Column()
-avatar?: string;
+  password!: string;
+
+@Column()
+  avatar?: string;
+
 
 @Column({ default: false })
-email_verified?: boolean;
+    email_verified?: boolean;
 
 @Column({ default: false })
-is_active?: boolean;
+    is_active?: boolean;
 
 @Column({ nullable: true, unique: true })
-token?: string;
+    token?: string;
 
 @Column({ nullable: true, unique: true })
 accessToken?: string;
 
+
 @Column({
-  type: 'enum',
-  enum: ['user', 'admin', 'moderator', 'editor', 'guest'],
-  default: 'user',
+    type: "enum",
+    enum: ["user", "admin", "moderator", "editor", "guest"],
+    default: "user",
 })
-roles!: AllowedRoles;
+    roles!: AllowedRoles;
 
 @CreateDateColumn()
-createdAt?: Date;
+    createdAt?: Date;
 
 @UpdateDateColumn()
-updatedAt?: Date;
+    updatedAt?: Date;
 }

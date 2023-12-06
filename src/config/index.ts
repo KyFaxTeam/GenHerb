@@ -11,8 +11,9 @@ import * as Joi from "joi";
 import ApiError from "../utils/apiError";
 import httpStatus from "http-status";
 import { Quiz } from "../features/quiz/entities";
-import { StatisticsForEvents } from "../features/events/entities/statistic";
 import { User } from "../features/auth/entities";
+import { Event } from "../features/events/entities";
+import { StatsEvent } from "../features/stats_event/entities";
 
 dotenv.config();
 // { path  : path.join(__dirname, "../../.env.dev")}
@@ -86,7 +87,7 @@ class Config {
                     ]
              */
             if(error.details[0].context?.key != "GJS_DEBUG_TOPICS" && error.details[0].context?.key != "ALLUSERSPROFILE" ) {
-                console.log("Error : ", error)
+                console.log("Error : ", error);
                 throw new ApiError({status : httpStatus.INTERNAL_SERVER_ERROR, message : "Server Error"});
             }
         }
@@ -100,7 +101,7 @@ class Config {
             password : envVars.POSTGRES_PASSWORD,
             database : envVars.POSTGRES_DATABASE,
             url : envVars.SUPABASE_POSTGRESQL_URL,
-            entities : [Quiz, Events, User, StatisticsForEvents]
+            entities : [Quiz, Event, User, StatsEvent]
         };
 
         

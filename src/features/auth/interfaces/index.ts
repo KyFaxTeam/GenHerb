@@ -1,7 +1,7 @@
 import { Request as ExpressRequest } from "express";
 import { User } from "../entities";
 
-type AllowedRoles = 'user' | 'admin' | 'moderator' | 'editor' | 'guest';
+type AllowedRoles = "user" | "admin" | "moderator" | "editor" | "guest";
 export interface UserInterface {
     pseudo: string;
     email: string;

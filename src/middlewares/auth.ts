@@ -1,12 +1,13 @@
 import { Response, NextFunction } from "express";
 import { RequestwithUser } from "../features/auth/interfaces";
 import ApiError from "../utils/apiError";
-import {getTokenFromHeader, returnvalidateUser } from "../features/auth/utils/authTokenGenerator"
+import {getTokenFromHeader, returnvalidateUser } from "../features/auth/utils/authTokenGenerator";
 import { UserService } from "../features/auth/services";
 // import { verifyHash } from "../features/auth/utils/encryptionUtils";
 
 
 export const authenticateUser = async (req: RequestwithUser, _res: Response, next: NextFunction) => {
+
   const token = getTokenFromHeader(req);
 
   // console.log("req.path : ",req.path)
@@ -54,18 +55,19 @@ export const authenticateUser = async (req: RequestwithUser, _res: Response, nex
 
 
 export const requiredRole = (role: string) => {
-  return (req: RequestwithUser, _res: Response, next: NextFunction) => {
-    const userRoles = req.user.roles;
+    return (req: RequestwithUser, _res: Response, next: NextFunction) => {
+        const userRoles = req.user.roles;
 
-    if (userRoles === role) {
-      next();
+        if (userRoles === role) {
+            next();
 
-    } else {
-      const error = new ApiError({ status: 403, message: 'Unauthorized' });
-      next(error);
-    }
-  };
+        } else {
+            const error = new ApiError({ status: 403, message: "Unauthorized" });
+            next(error);
+        }
+    };
 };
+
 
 
 export const verifyOwnership = async (req: RequestwithUser, res: Response, next: NextFunction) => {
@@ -89,11 +91,11 @@ export const verifyOwnership = async (req: RequestwithUser, res: Response, next:
       const error = new ApiError({ status: 403, message: 'Unauthorized Action' });
       next(error);
     }
-  };
+};
 
 
-  export const logRequest = (req: Request, res: Response, next: NextFunction) => {
+export const logRequest = (req: Request, res: Response, next: NextFunction) => {
     console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
     next();
-  };
+};
   

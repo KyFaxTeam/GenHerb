@@ -10,6 +10,7 @@ import { forgotPasswordValidator,
 
 
 
+
 /**
  * I am a route for the auth feature
  *
@@ -24,9 +25,9 @@ export default class AuthRoute extends BaseRoute {
     public constructor(app: express.Application) {
         super(app, "/geh/api/v1/auth", new AuthController());
 
-        this.route.post('/register', this.validator(registrationValidator), this.controller.register); 
-        this.route.post('/login', this.validator(loginValidator), this.controller.login)
-        this.route.post('/forgot-password', this.validator(forgotPasswordValidator), this.controller.forgotPassword)
+        this.route.post("/register", this.validator(registrationValidator), this.controller.register); 
+        this.route.post("/login", this.validator(loginValidator), this.controller.login);
+        this.route.post("/forgot-password", this.validator(forgotPasswordValidator), this.controller.forgotPassword);
         // route to verify reset password link
         this.route.get('/reset-password/:token', this.validator(resetPasswordValisator), this.controller.resetPassword)
         this.route.post('/refresh-token', [authenticateUser] as any, this.controller.refreshToken)
