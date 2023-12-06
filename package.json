@@ -5,7 +5,7 @@
   "scripts": {
     "test": "npx ts-mocha ./test/app.ts",
     "transpile": "tsc && nodemon ./build/app",
-    "build" : "tsc",
+    "toJs" : "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "dev": "nodemon",
