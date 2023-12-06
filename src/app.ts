@@ -70,11 +70,12 @@ class App {
     }
 }
 
-export const app = new App() ;
-if(Config.env === "development") {
-    app.listen();
-} else {
-    module.exports = app.app;
-    console.log("Serveur start");
-}
+const app = new App() ;
+// if(Config.env === "development") {
+//     app.listen();
+// } else {
+//     export const a = app.app;
+//     console.log("Serveur start");
+// }
 
+export const a = app.app;
