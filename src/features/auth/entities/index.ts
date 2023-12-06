@@ -34,8 +34,8 @@ avatar?: string;
 @Column({ default: false })
 email_verified?: boolean;
 
-@Column()
-lastActive?: Date;
+@Column({ default: false })
+is_active?: boolean;
 
 @Column({ nullable: true, unique: true })
 token?: string;
