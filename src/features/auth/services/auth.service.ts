@@ -42,11 +42,12 @@ export class AuthService {
 
 
   async register(user: Partial<UserInterface>): Promise<string | null> {
-    // console.log("//////////////// email :", email)
-    const { pseudo, email, password } = user;
+    const { pseudo, email, password, country, age } = user;
+    // console.log("//////////////// country :", country)
 
-    if (!pseudo || !email || !password) {
-      throw new ApiError({ status: 400, message: 'Pseudo, email, and password are required fields.' })
+
+    if (!pseudo || !email || !password || !country || !age) {
+      throw new ApiError({ status: 400, message: 'Pseudo, email, password, country and age are required fields.' })
     }
 
     const existingUser = await this.userService.getUserByMail(email);
@@ -149,9 +150,9 @@ export class AuthService {
 
         if (bool) {
           await this.userService.updateUser(user.id, {'token': newToken})
-          console.log('Token access not expired')
+          // console.log('Token access not expired')
         } else {
-          console.log('Token access is expired')
+          // console.log('Token access is expired')
           const accessToken = generateAccessToken(user)
           await this.userService.updateUser(user.id, {'token': newToken, 'accessToken': accessToken})
         }
@@ -162,7 +163,6 @@ export class AuthService {
     return null
 
   }
-
 
 }
 

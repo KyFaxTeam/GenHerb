@@ -25,6 +25,7 @@
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
     "nodemailer": "^6.9.7",
+    "nodemon": "^3.0.2",
     "passport-jwt": "^4.0.1",
     "pg": "^8.11.3",
     "ts-node": "^10.9.1",
@@ -42,7 +43,5 @@
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "eslint": "^8.53.0"
-}
-
-
+  }
 }
