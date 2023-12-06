@@ -34,7 +34,7 @@ export class EventService extends BaseService<Event> {
                     : "events.createdAt > :currentDate" ;
         
         const result  = await this.repo.createQueryBuilder("events")
-            .select(["events.id", "events.name", "events.image","events.details", "events.createdAt", "events.expireAt"])
+            .select(["events.id", "events.name", "events.image", "events.numberOfQuestions", "events.details", "events.createdAt", "events.expireAt"])
             .where(whereQuery, {currentDate : currentDate})
             .limit(config.limitQuiz)
             .getMany() ; // Execute the query and retrieve the result as an array of events.

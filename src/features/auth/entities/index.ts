@@ -35,7 +35,7 @@ export class User extends BaseEntity {
     token?: string;
 
 @Column({ nullable: true, unique: true })
-accessToken?: string;
+    accessToken?: string;
 
 
 @Column({
