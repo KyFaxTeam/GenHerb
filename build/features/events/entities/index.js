@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7,55 +8,48 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Event = void 0;
+const typeorm_1 = require("typeorm");
 let Event = class Event {
-    id;
-    name;
-    image;
-    numberOfQuestions;
-    content; // Assuming a custom type for 'List<Map>>'
-    details;
-    description;
-    createdAt;
-    expireAt;
 };
+exports.Event = Event;
 __decorate([
-    PrimaryGeneratedColumn(),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], Event.prototype, "id", void 0);
 __decorate([
-    Column(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Event.prototype, "name", void 0);
 __decorate([
-    Column({ nullable: true }),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Event.prototype, "image", void 0);
 __decorate([
-    Column(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Event.prototype, "numberOfQuestions", void 0);
 __decorate([
-    Column("json", { array: true }),
+    (0, typeorm_1.Column)("json", { array: true }),
     __metadata("design:type", Array)
 ], Event.prototype, "content", void 0);
 __decorate([
-    Column(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Event.prototype, "details", void 0);
 __decorate([
-    Column({ nullable: true }),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Event.prototype, "description", void 0);
 __decorate([
-    Column({ type: "timestamp" }),
+    (0, typeorm_1.Column)({ type: "timestamp" }),
     __metadata("design:type", Date)
 ], Event.prototype, "createdAt", void 0);
 __decorate([
-    Column({ type: "timestamp" }),
+    (0, typeorm_1.Column)({ type: "timestamp" }),
     __metadata("design:type", Date)
 ], Event.prototype, "expireAt", void 0);
-Event = __decorate([
-    Entity("events")
+exports.Event = Event = __decorate([
+    (0, typeorm_1.Entity)("events")
 ], Event);
-export { Event };

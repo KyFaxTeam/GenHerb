@@ -1,20 +1,18 @@
-import { Router } from "express";
-import valideRequest from "../utils/validate";
-export default class BaseRoute {
-    // - The express App
-    app;
-    // - The express Router
-    route = Router();
-    // - The route path
-    path;
-    // - The router controller
-    controller;
-    // validator
-    validator;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const validate_1 = __importDefault(require("../utils/validate"));
+class BaseRoute {
     constructor(app, path, controller) {
+        // - The express Router
+        this.route = (0, express_1.Router)();
         this.app = app,
             this.path = path;
         this.controller = controller,
-            this.validator = valideRequest;
+            this.validator = validate_1.default;
     }
 }
+exports.default = BaseRoute;

@@ -1,44 +1,50 @@
-import Joi from "joi";
-export const getActiveEventScheme = {
-    params: Joi.object().keys({
-        status: Joi.string().valid("past", "active", "future").required().description("I take  0: for inactive Events and 1 for active Events")
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.postUserResponseScheme = exports.getUserResponseScheme = exports.getStatisticScheme = exports.EventWithIdScheme = exports.getActiveEventScheme = void 0;
+const joi_1 = __importDefault(require("joi"));
+exports.getActiveEventScheme = {
+    params: joi_1.default.object().keys({
+        status: joi_1.default.string().valid("past", "active", "future").required().description("I take  0: for inactive Events and 1 for active Events")
     })
 };
-export const EventWithIdScheme = {
-    query: Joi.object().keys({
-        id: Joi.string().required().description("Id for events which want get data")
+exports.EventWithIdScheme = {
+    query: joi_1.default.object().keys({
+        id: joi_1.default.string().required().description("Id for events which want get data")
     })
 };
-export const getStatisticScheme = {
-    query: Joi.object().keys({
-        id: Joi.string().required().description("Id of Event")
+exports.getStatisticScheme = {
+    query: joi_1.default.object().keys({
+        id: joi_1.default.string().required().description("Id of Event")
     })
 };
-export const getUserResponseScheme = Joi.object().keys({
+exports.getUserResponseScheme = joi_1.default.object().keys({
 // TODO : We must define it 
 });
-export const postUserResponseScheme = {
-    body: Joi.object().keys({
-        eventId: Joi.string().required().description("Event played Id"),
-        playerPseudo: Joi.string().required().description("player Pseudo"),
-        score: Joi.number().required(),
-        correctAnswers: Joi.number().required(),
-        incorrectAnswers: Joi.number().required(),
-        response: Joi.array().items(Joi.object().keys({
-            thematic: Joi.string().required(),
-            subThematic: Joi.string().required(),
-            result: Joi.array().items(Joi.object().keys({
-                questionNum: Joi.number().required().description("Number of question"),
+exports.postUserResponseScheme = {
+    body: joi_1.default.object().keys({
+        eventId: joi_1.default.string().required().description("Event played Id"),
+        playerPseudo: joi_1.default.string().required().description("player Pseudo"),
+        score: joi_1.default.number().required(),
+        correctAnswers: joi_1.default.number().required(),
+        incorrectAnswers: joi_1.default.number().required(),
+        response: joi_1.default.array().items(joi_1.default.object().keys({
+            thematic: joi_1.default.string().required(),
+            subThematic: joi_1.default.string().required(),
+            result: joi_1.default.array().items(joi_1.default.object().keys({
+                questionNum: joi_1.default.number().required().description("Number of question"),
                 // question : Joi.string().required(),
                 // correctAnswer : Joi.string().required(),
-                playerAnswer: Joi.string().required(),
-                isCorrect: Joi.boolean().required(),
+                playerAnswer: joi_1.default.string().required(),
+                isCorrect: joi_1.default.boolean().required(),
                 // questionPoint : Joi.number().required(),
             }))
         })),
-        timeToPlay: Joi.number().required(),
-        scoreBeforeEvent: Joi.number().required(),
-        scoreAfterEvent: Joi.number().required(),
+        timeToPlay: joi_1.default.number().required(),
+        scoreBeforeEvent: joi_1.default.number().required(),
+        scoreAfterEvent: joi_1.default.number().required(),
     })
 };
 /**

@@ -70,7 +70,7 @@ class App {
     }
 }
 
-const app = new App() ;
+const geh = new App() ;
 // if(Config.env === "development") {
 //     app.listen();
 // } else {
@@ -78,4 +78,4 @@ const app = new App() ;
 //     console.log("Serveur start");
 // }
 
-export const a = app.app;
+export const app = geh.app;

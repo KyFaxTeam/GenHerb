@@ -1,11 +1,11 @@
-import { dbSource } from "../config/data.source";
-export class BaseService {
-    // postgresql pool 
-    repository;
-    // Postgresql table Name
-    table;
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.BaseService = void 0;
+const data_source_1 = require("../config/data.source");
+class BaseService {
     constructor(table, entity) {
-        this.repository = dbSource.getRepository(entity);
+        this.repository = data_source_1.dbSource.getRepository(entity);
         this.table = table;
     }
 }
+exports.BaseService = BaseService;

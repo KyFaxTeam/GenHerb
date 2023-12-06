@@ -1,12 +1,17 @@
-import { createLogger, format, transports } from "winston";
-const { combine, timestamp, prettyPrint, splat, printf, colorize, uncolorize } = format;
-import config from "../config";
-const logger = createLogger({
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const winston_1 = require("winston");
+const { combine, timestamp, prettyPrint, splat, printf, colorize, uncolorize } = winston_1.format;
+const config_1 = __importDefault(require("../config"));
+const logger = (0, winston_1.createLogger)({
     // level: config.env === "development" ? "debug" : "info",
-    format: combine(splat(), timestamp(), prettyPrint(), config.env === "development" ? colorize() : uncolorize(), printf(({ level, message, timestamp }) => `${level === "error" ? "🔴" : "🟢"} ${timestamp} :: ${level} :: ${message}`)),
+    format: combine(splat(), timestamp(), prettyPrint(), config_1.default.env === "development" ? colorize() : uncolorize(), printf(({ level, message, timestamp }) => `${level === "error" ? "🔴" : "🟢"} ${timestamp} :: ${level} :: ${message}`)),
     transports: [
-        config.env === "development" ? new transports.Console() :
-            new transports.File({ filename: `${config.logDirectory}/error.log` })
+        config_1.default.env === "development" ? new winston_1.transports.Console() :
+            new winston_1.transports.File({ filename: `${config_1.default.logDirectory}/error.log` })
     ],
 });
-export default logger;
+exports.default = logger;

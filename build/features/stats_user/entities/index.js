@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7,27 +8,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "../../auth/entities";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.StatsUser = void 0;
+const typeorm_1 = require("typeorm");
+const entities_1 = require("../../auth/entities");
 let StatsUser = class StatsUser {
-    id;
-    pseudo;
-    user;
 };
+exports.StatsUser = StatsUser;
 __decorate([
-    PrimaryGeneratedColumn(),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], StatsUser.prototype, "id", void 0);
 __decorate([
-    Column(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], StatsUser.prototype, "pseudo", void 0);
 __decorate([
-    OneToOne(() => User),
-    JoinColumn({ name: "pseudo", referencedColumnName: "pseudo" }),
-    __metadata("design:type", User)
+    (0, typeorm_1.OneToOne)(() => entities_1.User),
+    (0, typeorm_1.JoinColumn)({ name: "pseudo", referencedColumnName: "pseudo" }),
+    __metadata("design:type", entities_1.User)
 ], StatsUser.prototype, "user", void 0);
-StatsUser = __decorate([
-    Entity()
+exports.StatsUser = StatsUser = __decorate([
+    (0, typeorm_1.Entity)()
 ], StatsUser);
-export { StatsUser };

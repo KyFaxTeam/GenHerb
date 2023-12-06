@@ -1,18 +1,23 @@
-import pick from "./pick";
-import Joi from "joi";
-import ApiError from "./apiError";
-import httpStatus from "http-status";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const pick_1 = __importDefault(require("./pick"));
+const joi_1 = __importDefault(require("joi"));
+const apiError_1 = __importDefault(require("./apiError"));
+const http_status_1 = __importDefault(require("http-status"));
 const valideRequest = (schema) => (req, res, next) => {
-    const validSchema = pick(schema, ["params", "query", "body"]);
-    const object = pick(req, Object.keys(validSchema));
-    const { value, error } = Joi.compile(validSchema)
+    const validSchema = (0, pick_1.default)(schema, ["params", "query", "body"]);
+    const object = (0, pick_1.default)(req, Object.keys(validSchema));
+    const { value, error } = joi_1.default.compile(validSchema)
         .prefs({ errors: { label: "key" } })
         .validate(object);
     if (error) {
         // throw error;
-        return next(new ApiError({ status: httpStatus.BAD_REQUEST, message: error.message }));
+        return next(new apiError_1.default({ status: http_status_1.default.BAD_REQUEST, message: error.message }));
     }
     Object.assign(req, value);
     return next();
 };
-export default valideRequest;
+exports.default = valideRequest;

@@ -1,22 +1,44 @@
-import dotenv from "dotenv";
-import * as Joi from "joi";
-import ApiError from "../utils/apiError";
-import httpStatus from "http-status";
-import { Quiz } from "../features/quiz/entities";
-import { User } from "../features/auth/entities";
-import { Event } from "../features/events/entities";
-import { StatsEvent } from "../features/stats_event/entities";
-dotenv.config();
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const dotenv_1 = __importDefault(require("dotenv"));
+const Joi = __importStar(require("joi"));
+const apiError_1 = __importDefault(require("../utils/apiError"));
+const http_status_1 = __importDefault(require("http-status"));
+const entities_1 = require("../features/quiz/entities");
+const entities_2 = require("../features/auth/entities");
+const entities_3 = require("../features/events/entities");
+const entities_4 = require("../features/stats_event/entities");
+dotenv_1.default.config();
 // { path  : path.join(__dirname, "../../.env.dev")}
 class Config {
-    static instance;
-    dbConfig;
-    logDirectory;
-    server;
-    env;
-    limitQuiz;
-    secretKey;
     constructor() {
+        var _a, _b;
         const envVarSchema = Joi.object().keys({
             //  Env
             NODE_ENV: Joi.string().required().valid("development", "production", "test"),
@@ -51,9 +73,9 @@ class Config {
                     }
                     ]
              */
-            if (error.details[0].context?.key != "GJS_DEBUG_TOPICS" && error.details[0].context?.key != "ALLUSERSPROFILE") {
+            if (((_a = error.details[0].context) === null || _a === void 0 ? void 0 : _a.key) != "GJS_DEBUG_TOPICS" && ((_b = error.details[0].context) === null || _b === void 0 ? void 0 : _b.key) != "ALLUSERSPROFILE") {
                 console.log("Error : ", error);
-                throw new ApiError({ status: httpStatus.INTERNAL_SERVER_ERROR, message: "Server Error" });
+                throw new apiError_1.default({ status: http_status_1.default.INTERNAL_SERVER_ERROR, message: "Server Error" });
             }
         }
         this.logDirectory = envVars.LOG_DIRECTORY;
@@ -65,7 +87,7 @@ class Config {
             password: envVars.POSTGRES_PASSWORD,
             database: envVars.POSTGRES_DATABASE,
             url: envVars.SUPABASE_POSTGRESQL_URL,
-            entities: [Quiz, Event, User, StatsEvent]
+            entities: [entities_1.Quiz, entities_3.Event, entities_2.User, entities_4.StatsEvent]
         };
         this.server = {
             port: envVars.PORT,
@@ -86,4 +108,4 @@ class Config {
         return Config.instance;
     }
 }
-export default Config.getInstance();
+exports.default = Config.getInstance();

@@ -1,22 +1,28 @@
-import BaseFeature from "../../abstracts/features.base";
-import { AuthRoute, UserRoute } from "./routes";
-export class AuthFeature extends BaseFeature {
-    route;
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.UserFeature = exports.AuthFeature = void 0;
+const features_base_1 = __importDefault(require("../../abstracts/features.base"));
+const routes_1 = require("./routes");
+class AuthFeature extends features_base_1.default {
     constructor(app) {
         super(app, "Auth", "Auth Connection");
-        this.route = new AuthRoute(this.app);
+        this.route = new routes_1.AuthRoute(this.app);
     }
     init() {
         this.route.init();
     }
 }
-export class UserFeature extends BaseFeature {
-    route;
+exports.AuthFeature = AuthFeature;
+class UserFeature extends features_base_1.default {
     constructor(app) {
         super(app, "User", "User Connection");
-        this.route = new UserRoute(this.app);
+        this.route = new routes_1.UserRoute(this.app);
     }
     init() {
         this.route.init();
     }
 }
+exports.UserFeature = UserFeature;

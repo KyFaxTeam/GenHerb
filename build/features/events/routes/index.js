@@ -1,6 +1,11 @@
-import BaseRoute from "../../../abstracts/route.base";
-import EventController from "../controllers";
-import { getActiveEventScheme, EventWithIdScheme } from "../validations";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const route_base_1 = __importDefault(require("../../../abstracts/route.base"));
+const controllers_1 = __importDefault(require("../controllers"));
+const validations_1 = require("../validations");
 /**
  * I am a route for the events feature
  *
@@ -10,15 +15,15 @@ import { getActiveEventScheme, EventWithIdScheme } from "../validations";
  * @extends BaseRoute
  */
 // TODO: We must add more and utils routes 
-export default class ArticleRoute extends BaseRoute {
+class ArticleRoute extends route_base_1.default {
     constructor(app) {
-        super(app, "/geh/api/v1/events", new EventController());
+        super(app, "/geh/api/v1/events", new controllers_1.default());
         // * 1 - GET request to retrieve active or expired events.
-        this.route.get("/status/:status", this.validator(getActiveEventScheme), this.controller.eventByStatus);
+        this.route.get("/status/:status", this.validator(validations_1.getActiveEventScheme), this.controller.eventByStatus);
         // * 2 - GET request to retrieve quiz of a event
-        this.route.get("/start", this.validator(EventWithIdScheme), this.controller.eventStartToPlay);
+        this.route.get("/start", this.validator(validations_1.EventWithIdScheme), this.controller.eventStartToPlay);
         // * 3 - GET request to retrieve one event with his id
-        this.route.get("", this.validator(EventWithIdScheme), this.controller.eventWithId);
+        this.route.get("", this.validator(validations_1.EventWithIdScheme), this.controller.eventWithId);
         // * 4 - GET request to retrieve static one specific event 
         // this.route.get("/statistic", this.validator(getStatisticScheme), this.controller.statistic);
         // * 5 - GET request to retrieve a player's response
@@ -30,3 +35,4 @@ export default class ArticleRoute extends BaseRoute {
         this.app.use(this.path, this.route);
     }
 }
+exports.default = ArticleRoute;

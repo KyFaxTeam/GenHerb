@@ -1,83 +1,89 @@
-import Joi from "joi";
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.verifyEmailTokenValidator = exports.deleteUsersValidator = exports.validId = exports.resetPasswordValisator = exports.forgotPasswordValidator = exports.loginValidator = exports.registrationValidator = void 0;
+const joi_1 = __importDefault(require("joi"));
 const allowedRoles = ["user", "admin", "moderator", "editor", "guest"];
-export const registrationValidator = {
-    body: Joi.object({
-        pseudo: Joi.string().required().min(2).max(20).messages({
+exports.registrationValidator = {
+    body: joi_1.default.object({
+        pseudo: joi_1.default.string().required().min(2).max(20).messages({
             "string.min": "Password must be at least {{#limit}} characters long.",
             "string.max": "Password must be at most {{#limit}} characters long.",
             "any.required": "Username is required."
         }),
-        email: Joi.string().trim().email().required().messages({
+        email: joi_1.default.string().trim().email().required().messages({
             "string.email": "Email address must be in a valid format.",
             "any.required": "Email address is required.",
         }),
-        password: Joi.string().required().min(6).max(20).messages({
+        password: joi_1.default.string().required().min(6).max(20).messages({
             "string.min": "Password must be at least {{#limit}} characters long.",
             "string.max": "Password must be at most {{#limit}} characters long.",
             "any.required": "Password is required.",
         }),
-        repeat_password: Joi.string().valid(Joi.ref("password")).required().messages({
+        repeat_password: joi_1.default.string().valid(joi_1.default.ref("password")).required().messages({
             "any.only": "Passwords must match.",
             "any.required": "Password confirmation is required.",
         }),
-        roles: Joi.string().valid(...allowedRoles).messages({
+        roles: joi_1.default.string().valid(...allowedRoles).messages({
             "any.only": "Roles value is not appropriate"
         }),
-        avatar: Joi.string(),
-        country: Joi.string().required().messages({
+        avatar: joi_1.default.string(),
+        country: joi_1.default.string().required().messages({
             'any.required': 'Country is required.',
         }),
-        age: Joi.number().required().min(5).max(120).messages({
+        age: joi_1.default.number().required().min(5).max(120).messages({
             'string.min': 'Age must be at least {{#limit}} characters long.',
             'string.max': 'Age must be at most {{#limit}} characters long.',
             'any.required': 'Age is required.',
         }),
     }),
 };
-export const loginValidator = {
-    body: Joi.object({
-        email: Joi.string().trim().email().required().messages({
+exports.loginValidator = {
+    body: joi_1.default.object({
+        email: joi_1.default.string().trim().email().required().messages({
             "string.email": "Email address must be in a valid format.",
             "any.required": "Email address is required.",
         }),
-        password: Joi.string().required().messages({
+        password: joi_1.default.string().required().messages({
             "any.required": "Password is required.",
         }),
     })
 };
-export const forgotPasswordValidator = {
-    body: Joi.object({
-        email: Joi.string().trim().email().required().messages({
+exports.forgotPasswordValidator = {
+    body: joi_1.default.object({
+        email: joi_1.default.string().trim().email().required().messages({
             "string.email": "Email address must be in a valid format.",
             "any.required": "Email address is required.",
         }),
     })
 };
-export const resetPasswordValisator = {
-    params: Joi.object({
-        token: Joi.string().required(),
+exports.resetPasswordValisator = {
+    params: joi_1.default.object({
+        token: joi_1.default.string().required(),
     }),
-    query: Joi.object({
-        new_password: Joi.string().required().min(6).max(20).messages({
+    query: joi_1.default.object({
+        new_password: joi_1.default.string().required().min(6).max(20).messages({
             "string.min": "Password must be at least {{#limit}} characters long.",
             "string.max": "Password must be at most {{#limit}} characters long.",
             "any.required": "Password is required.",
         }),
     })
 };
-export const validId = {
-    params: Joi.object({
-        id: Joi.number().required(),
+exports.validId = {
+    params: joi_1.default.object({
+        id: joi_1.default.number().required(),
     })
 };
-export const deleteUsersValidator = {
-    body: Joi.object({
-        userIds: Joi.array().items(Joi.number()).required().min(1).messages({
+exports.deleteUsersValidator = {
+    body: joi_1.default.object({
+        userIds: joi_1.default.array().items(joi_1.default.number()).required().min(1).messages({
             "array.base": "User IDs must be an array of numbers.",
             "array.min": "At least one user ID is required for deletion.",
         }),
     }),
 };
-export const verifyEmailTokenValidator = Joi.object({
-    token: Joi.string().required()
+exports.verifyEmailTokenValidator = joi_1.default.object({
+    token: joi_1.default.string().required()
 });

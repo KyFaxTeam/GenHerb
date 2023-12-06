@@ -1,3 +1,4 @@
+"use strict";
 /**
   * Selected specific keys on a object
   *
@@ -5,6 +6,7 @@
   * @param {any[]} properties -  The keys to pick
   * @returns {Object}         -  The new object
   */
+Object.defineProperty(exports, "__esModule", { value: true });
 // ! The type of object parameter must be <Object>
 const pick = (object, properties) => {
     return properties.reduce((obj, key) => {
@@ -16,4 +18,4 @@ const pick = (object, properties) => {
     // initial obj is empty @Object
     {});
 };
-export default pick;
+exports.default = pick;

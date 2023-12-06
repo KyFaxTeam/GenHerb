@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7,16 +8,10 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Quiz = void 0;
+const typeorm_1 = require("typeorm");
 let Quiz = class Quiz {
-    id;
-    question;
-    answer;
-    thematic;
-    subThematic;
-    level;
-    points;
-    times;
     constructor(id, question, answer, thematic, subThematic, level, points, times) {
         this.id = id;
         this.question = question;
@@ -28,40 +23,40 @@ let Quiz = class Quiz {
         this.times = times;
     }
 };
+exports.Quiz = Quiz;
 __decorate([
-    PrimaryGeneratedColumn(),
+    (0, typeorm_1.PrimaryGeneratedColumn)(),
     __metadata("design:type", Number)
 ], Quiz.prototype, "id", void 0);
 __decorate([
-    Column(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Quiz.prototype, "question", void 0);
 __decorate([
-    Column("simple-array", { array: true }),
+    (0, typeorm_1.Column)("simple-array", { array: true }),
     __metadata("design:type", Array)
 ], Quiz.prototype, "answer", void 0);
 __decorate([
-    Column(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Quiz.prototype, "thematic", void 0);
 __decorate([
-    Column({ nullable: true }),
+    (0, typeorm_1.Column)({ nullable: true }),
     __metadata("design:type", String)
 ], Quiz.prototype, "subThematic", void 0);
 __decorate([
-    Column(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", String)
 ], Quiz.prototype, "level", void 0);
 __decorate([
-    Column(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Quiz.prototype, "points", void 0);
 __decorate([
-    Column(),
+    (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Quiz.prototype, "times", void 0);
-Quiz = __decorate([
-    Entity("quiz"),
+exports.Quiz = Quiz = __decorate([
+    (0, typeorm_1.Entity)("quiz"),
     __metadata("design:paramtypes", [Number, String, Array, String, String, String, Number, Number])
 ], Quiz);
-export { Quiz };

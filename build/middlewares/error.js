@@ -1,6 +1,35 @@
-import ApiError from "../utils/apiError";
-import * as httpStatus from "http-status";
-import logger from "../utils/logger";
+"use strict";
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.errorHandler = exports.errorConverter = void 0;
+const apiError_1 = __importDefault(require("../utils/apiError"));
+const httpStatus = __importStar(require("http-status"));
+const logger_1 = __importDefault(require("../utils/logger"));
 /**
  * Convert any other error to ApiError
  *
@@ -12,14 +41,15 @@ import logger from "../utils/logger";
  * @param {NextFunction} next - NextFunction
  * @returns {Function} - Express NextFunction
  */
-export const errorConverter = (err, req, res, next) => {
+const errorConverter = (err, req, res, next) => {
     let error = err;
     // throw error ;
-    if (!(error instanceof ApiError)) {
-        error = new ApiError({ status: httpStatus.INTERNAL_SERVER_ERROR, message: error.message || "Unknown Error" });
+    if (!(error instanceof apiError_1.default)) {
+        error = new apiError_1.default({ status: httpStatus.INTERNAL_SERVER_ERROR, message: error.message || "Unknown Error" });
     }
     next(error);
 };
+exports.errorConverter = errorConverter;
 /**
    * Handle ApiError and send response
    *
@@ -31,9 +61,10 @@ export const errorConverter = (err, req, res, next) => {
    * @param {NextFunction} next - NextFunction
    * @returns {Function} - Express NextFunction
    */
-export const errorHandler = (err, req, res, next) => {
+const errorHandler = (err, req, res, next) => {
     // throw err ;
     const { status, message } = err;
     res.status(status).send({ success: false, error: { status: status, message: message } });
-    logger.error(`Status : ${status}, Message : ${message}`);
+    logger_1.default.error(`Status : ${status}, Message : ${message}`);
 };
+exports.errorHandler = errorHandler;
