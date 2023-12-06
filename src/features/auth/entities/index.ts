@@ -13,8 +13,14 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id!: number;
 
-@Column()
+@Column({ unique: true })
 pseudo!: string;
+
+@Column()
+country!: string;
+
+@Column()
+age!: number
 
 @Column()
 email!: string;
@@ -28,8 +34,8 @@ avatar?: string;
 @Column({ default: false })
 email_verified?: boolean;
 
-@Column({ default: false })
-is_active?: boolean;
+@Column()
+lastActive?: Date;
 
 @Column({ nullable: true, unique: true })
 token?: string;

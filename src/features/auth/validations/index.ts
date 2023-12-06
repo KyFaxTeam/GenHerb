@@ -26,6 +26,16 @@ export const registrationValidator = {
       'any.required': 'Password confirmation is required.',
     }),
 
+    country: Joi.string().required().messages({
+      'any.required': 'Country is required.',
+    }),
+
+    age: Joi.number().required().min(5).max(120).messages({
+      'string.min': 'Age must be at least {{#limit}} characters long.',
+      'string.max': 'Age must be at most {{#limit}} characters long.',
+      'any.required': 'Age is required.',
+    }),
+
     roles : Joi.string().valid(...allowedRoles).messages({
       'any.only': 'Roles value is not appropriate'
     }), 

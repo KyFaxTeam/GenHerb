@@ -77,6 +77,15 @@ export class UserController extends BaseController {
     res.status(200).send(successResponseFormat({ message: 'User deleted successfully.' }));
   });
 
+  // heartbeart = this.catchAsync(async (req:RequestwithUser, res: Response) => {
+  //   const updates = { 'lastActive': new Date() }
+  //   await this.service.updateUser(req.user.id, updates)
+
+  //   res.status(200).send(successResponseFormat({ message: 'User update lastActive successfully.' }));
+
+  // })
+  
+
 
   activateUser = this.catchAsync(async (req: RequestwithUser, res: Response) => {
     await this.service.activateUser(req.user.id);
