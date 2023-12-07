@@ -11,5 +11,6 @@
         "src": "./build/(.*)",
         "dest": "./build/app.js"
       }
-    ]
+    ],
+    "rewrites": [{ "source": "/build/(.*)", "destination": "/build" }]
   }
