@@ -1,7 +1,7 @@
 {
   "name": "genherb",
   "version": "1.0.0",
-  "main": "./src/app.ts",
+  "main": "./build/app.js",
   "scripts": {
     "test": "npx ts-mocha ./test/app.ts",
     "transpile": "tsc && nodemon ./build/app",
