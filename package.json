@@ -10,7 +10,7 @@
     "lint:fix": "eslint . --fix",
     "dev": "nodemon",
     "tsc": "tsc --watch",
-    "start" : "node ./build/app.js"
+    "start" : "node ."
   },
   "author": "",
   "license": "ISC",
