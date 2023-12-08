@@ -9,6 +9,7 @@ import  bodyParser from "body-parser";
 import helmet from "helmet";
 import { dbSource } from "./config/data.source";
 import logger from "./utils/logger";
+// import { dynamicAuthMiddleware } from "./middlewares/match";
 
 class App {
     // - Express app
@@ -56,6 +57,8 @@ class App {
         this.app.use(bodyParser.json());
         // secure apps by setting HTTP response headers.
         this.app.use(helmet());
+
+        // this.app.use(dynamicAuthMiddleware as any)
     }
 
     private plugMiddlewareAfterFeatures() {

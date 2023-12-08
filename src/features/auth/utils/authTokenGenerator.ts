@@ -111,13 +111,13 @@ export const getTokenFromHeader = (req: Request) => {
 
 try {
   const authorizationHeader = req.headers['authorization'] || req.headers['Authorization'];
-  console.log(authorizationHeader);
+  // console.log(authorizationHeader);
   
   if (authorizationHeader && (authorizationHeader as string).startsWith('Token') || (authorizationHeader as string).startsWith('Bearer')) {
     return (authorizationHeader as string).split(' ')[1];
   } 
 } catch (error) {
-  return new ApiError({ status: 403, message: "Auth token is required"}) ;
+  return new ApiError({ status: 400, message: "Auth token is required"}) ;
 }
 
   return null;

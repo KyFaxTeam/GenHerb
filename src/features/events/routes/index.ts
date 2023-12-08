@@ -5,6 +5,8 @@ import { getActiveEventScheme,
     EventWithIdScheme,
     getStatisticScheme, getUserResponseScheme, postUserResponseScheme } from "../validations";   
 
+import { verifyOwnership, authenticateUser } from "../../../middlewares/auth";
+
 /**
  * I am a route for the events feature
  *
@@ -21,13 +23,13 @@ export default class ArticleRoute extends BaseRoute {
 
 
         // * 1 - GET request to retrieve active or expired events.
-        this.route.get("/status/:status", this.validator(getActiveEventScheme), this.controller.eventByStatus);
+        this.route.get("/status/:status", this.validator(getActiveEventScheme), [authenticateUser] as any, [verifyOwnership] as any, this.controller.eventByStatus);
         
         // * 2 - GET request to retrieve quiz of a event
-        this.route.get("/start", this.validator(EventWithIdScheme), this.controller.eventStartToPlay);
+        this.route.get("/start", this.validator(EventWithIdScheme), [authenticateUser] as any, [verifyOwnership] as any, this.controller.eventStartToPlay);
 
         // * 3 - GET request to retrieve one event with his id
-        this.route.get("", this.validator(EventWithIdScheme), this.controller.eventWithId);
+        this.route.get("", this.validator(EventWithIdScheme), [authenticateUser] as any, [verifyOwnership] as any, this.controller.eventWithId);
         
         // * 4 - GET request to retrieve static one specific event 
         // this.route.get("/statistic", this.validator(getStatisticScheme), this.controller.statistic);

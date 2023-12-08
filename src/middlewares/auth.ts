@@ -7,10 +7,10 @@ import { UserService } from "../features/auth/services";
 
 
 export const authenticateUser = async (req: RequestwithUser, res: Response, next: NextFunction) => {
-
+  console.log("You call authenticate method")
   const token = getTokenFromHeader(req);
 
-  console.log("req.path : ",req.path)
+  // console.log("req.path : ",req.path)
 
   if (!token) {
       // console.log("Token is missing.");
