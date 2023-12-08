@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "./build/app.js",
   "scripts": {
+    "transpile": "tsc && nodemon ./build/app",
     "build" : "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
