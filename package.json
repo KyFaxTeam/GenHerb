@@ -10,7 +10,7 @@
     "dev": "nodemon",
     "tsc": "tsc --watch",
     "start" : "node .",
-    "vercel-build": "npm run build"
+    "vercel-build": "npm run transpile"
 
   },
   "author": "",
