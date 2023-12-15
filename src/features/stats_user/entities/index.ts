@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, OneToOne, JoinColumn } from "typeorm";
 import { User } from "../../auth/entities";
 
 @Entity()
@@ -7,9 +7,32 @@ export class StatsUser {
       id!: number;
 
   @Column()
-      pseudo!: string;
-  
+      userId!: number;
+
   @OneToOne(() => User)
-    @JoinColumn({ name: "pseudo", referencedColumnName: "pseudo" })
+    @JoinColumn({ name: "userId", referencedColumnName: "id" })
       user!: User;
+
+  @Column({default : 0})
+      score!: number;
+
+  @Column({default : 0})
+      correctAnswers!: number;
+
+  @Column({default : 0})
+      incorrectAnswers!: number;
+
+  @Column("json")
+      scoresByQuiz!: {
+        date: Date,
+        quizId: number,
+        score: number
+      }[];
+
+  @Column()
+      timeToPlay!: number;
+
+  @CreateDateColumn({ type: "timestamp with time zone" })
+      createdAt!: Date;
+
 }

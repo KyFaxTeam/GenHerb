@@ -4,6 +4,7 @@ import QuizFeature from "./quiz";
 import EventFeature from "./events";
 import { AuthFeature, UserFeature } from "./auth";
 import StatsEventFeature from "./stats_event";
+import StatsUserFeature from "./stats_user";
 
 /**
  * I am the Features class.
@@ -24,8 +25,10 @@ export default class Features {
         this.featuresLists.push(new QuizFeature(this.app));
         this.featuresLists.push(new EventFeature(this.app));
         this.featuresLists.push(new StatsEventFeature(this.app));
+        this.featuresLists.push(new StatsUserFeature(this.app));
         this.featuresLists.push(new UserFeature(this.app));
         this.featuresLists.push(new AuthFeature(this.app));
+        
 
     }
   
