@@ -1,7 +1,8 @@
 import * as jwt from 'jsonwebtoken';
 import { User } from '../entities';
 import config from '../../../config';
-import { Request } from 'express';
+import { Request} from 'express';
+import ApiError from '../../../utils/apiError';
 
 
 const secretKey = config.secretKey;
@@ -107,14 +108,20 @@ export const getPayload = (token: string): any | null => {
 
 
 export const getTokenFromHeader = (req: Request) => {
-  const authorizationHeader = req.headers['authorization'] || req.headers['Authorization'];
 
+try {
+  const authorizationHeader = req.headers['authorization'] || req.headers['Authorization'];
+  // console.log(authorizationHeader);
+  
   if (authorizationHeader && (authorizationHeader as string).startsWith('Token') || (authorizationHeader as string).startsWith('Bearer')) {
     return (authorizationHeader as string).split(' ')[1];
-  }
+  } 
+} catch (error) {
+  return new ApiError({ status: 400, message: "Auth token is required"}) ;
+}
 
   return null;
-};
+} 
 
 
 export const isverifyTokenAndValidDate = (token:string): boolean | null=> {

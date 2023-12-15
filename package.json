@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "main": "./build/app.js",
   "scripts": {
-    "test": "npx ts-mocha ./test/app.ts",
-    "transpile": "tsc && nodemon ./build/app",
-    "toJs" : "tsc",
+    "transpile": "tsc && node ./build/app",
+    "build" : "tsc",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "dev": "nodemon",
     "tsc": "tsc --watch",
-    "start" : "node ."
+    "start" : "node .",
+    "vercel-build": "echo bonjour"
+
   },
   "author": "",
   "license": "ISC",
