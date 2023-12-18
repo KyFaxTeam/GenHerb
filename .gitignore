@@ -1,6 +1,6 @@
 # folder
 node_modules
-stats_user
+stats_user/
 
 # files
 .vercel
