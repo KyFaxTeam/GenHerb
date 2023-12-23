@@ -1,7 +1,5 @@
 # folder
 node_modules
-stats_user/
 
 # files
-.vercel
 .env
