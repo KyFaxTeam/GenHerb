@@ -81,4 +81,4 @@ if(Config.env === "development") {
     console.log("Serveur start");
 }
 
-// export const app = geh.app;
+export const app = geh.app;
