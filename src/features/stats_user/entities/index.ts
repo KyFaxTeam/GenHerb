@@ -23,11 +23,12 @@ export class StatsUser {
       incorrectAnswers!: number;
 
   @Column("json")
-      scoresByQuiz!: {
-        date: Date,
-        quizId: number,
-        score: number
-      }[];
+  scoresByQuiz!: {
+    [quizId: number]: {
+      date: Date;
+      score: number;
+    };
+  };
 
   @Column()
       timeToPlay!: number;

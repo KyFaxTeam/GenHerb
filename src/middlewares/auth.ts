@@ -44,7 +44,7 @@ export const authenticateUser = async (req: RequestwithUser, res: Response, next
     const service = new UserService();
     const user = await service.getUserById(userId);
 
-    console.log(user)
+    // console.log(user)
   
     if (!user) {
         // console.log("User not found.");
@@ -71,6 +71,7 @@ export const requiredRole = (role: string) => {
         const userRoles = req.user.roles;
 
         if (userRoles === role) {
+            // console.log('Verification admin successfully')
             next();
 
         } else {

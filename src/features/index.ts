@@ -24,8 +24,8 @@ export default class Features {
         this.app = app;
         this.featuresLists.push(new QuizFeature(this.app));
         this.featuresLists.push(new EventFeature(this.app));
-        //this.featuresLists.push(new StatsEventFeature(this.app));
-        //this.featuresLists.push(new StatsUserFeature(this.app));
+        this.featuresLists.push(new StatsEventFeature(this.app));
+        this.featuresLists.push(new StatsUserFeature(this.app));
         this.featuresLists.push(new UserFeature(this.app));
         this.featuresLists.push(new AuthFeature(this.app));
         

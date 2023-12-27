@@ -18,17 +18,21 @@ export default class StatsUserRoute extends BaseRoute {
     public constructor(app: express.Application) {
         super(app, "/geh/api/v1/stats_user", new StatsUserController());
 
+        // admin 
+        this.route.get("/ranking", [authenticateUser as any], [verifyOwnership as any], [requiredRole('admin')] as any, this.controller.getRanking);
+        this.route.get("/total-quizzes-completed", [authenticateUser as any], [verifyOwnership as any], [requiredRole('admin')] as any,  this.controller.getOwnTotalQuizCompleted);
+        this.route.delete("/:userId", [authenticateUser as any], [verifyOwnership as any], [requiredRole('admin')] as any, this.controller.deleteStatsUser);
+        // this.route.get("/quiz-stats/:quizId", [authenticateUser as any], [verifyOwnership as any], [requiredRole('admin')] as any, this.controller.getQuizStats);
+     
+
         this.route.get("", [authenticateUser as any], [verifyOwnership as any], this.controller.getOwnStats);
         this.route.get("/:userId", this.validator(getStatsWithIdScheme), [authenticateUser as any], [verifyOwnership as any], this.controller.getStatsWithUserId);
         this.route.post("", this.validator(playerPostStatsEventScheme), [authenticateUser as any], [verifyOwnership as any], this.controller.postStatsUser);
-        this.route.put("/:userId", [authenticateUser as any], [verifyOwnership as any], this.controller.updateStats);
+        this.route.put("", [authenticateUser as any], [verifyOwnership as any], this.controller.updateStats);
         
+
         
-        this.route.delete("/:userId", [authenticateUser as any], [verifyOwnership as any], [requiredRole('admin')] as any, this.controller.deleteStatsUser);
-        this.route.get("/total-quizzes-completed", [authenticateUser as any], [verifyOwnership as any], [requiredRole('admin')] as any, this.controller.getOwnTotalQuizCompleted);
-        this.route.get("/ranking", [authenticateUser as any], [verifyOwnership as any], [requiredRole('admin')] as any,  this.controller.getRanking);
-        this.route.get("/quiz-stats/:quizId", [authenticateUser as any], [verifyOwnership as any], [requiredRole('admin')] as any, this.controller.getQuizStats);
-     
+       
     }
 
     public init(): void {
