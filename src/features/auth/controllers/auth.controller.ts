@@ -25,8 +25,8 @@ export class AuthController extends BaseController {
   });
 
   login = this.catchAsync(async (req: Request, res: Response) => {
-    const { mail, password } = req.body;
-    const token = await this.service.login(mail, password);
+    const { email, password } = req.body;
+    const token = await this.service.login(email, password);
     if (token) {
       res.status(200).send(successResponseFormat({ token }));
     } else {

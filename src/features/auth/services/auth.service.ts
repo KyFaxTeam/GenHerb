@@ -16,6 +16,8 @@ export class AuthService {
   async login(mail: string, password: string): Promise<string | null> {
     
     const isValidCredentials = await this.userService.validateUserCredentials(mail, password);
+    console.log("password : ", password)
+    console.log("isValidCredentials :", isValidCredentials)
 
     if (isValidCredentials) {
       

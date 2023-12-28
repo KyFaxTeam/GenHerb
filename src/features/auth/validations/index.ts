@@ -7,7 +7,7 @@ export const registrationValidator = {
         pseudo: Joi.string().required().min(2).max(20).messages({ 
             "string.min": "Password must be at least {{#limit}} characters long.",
             "string.max": "Password must be at most {{#limit}} characters long.",
-            "any.required": "Username is required."
+            "any.required": "Pseudo is required."
         }),
 
         email: Joi.string().trim().email().required().messages({

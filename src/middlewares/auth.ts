@@ -7,7 +7,7 @@ import { UserService } from "../features/auth/services";
 
 
 export const authenticateUser = async (req: RequestwithUser, res: Response, next: NextFunction) => {
-  console.log("You call authenticate method")
+  // console.log("You call authenticate method")
   const token = getTokenFromHeader(req);
 
   // console.log("req.path : ",req.path)
@@ -43,6 +43,8 @@ export const authenticateUser = async (req: RequestwithUser, res: Response, next
   
     const service = new UserService();
     const user = await service.getUserById(userId);
+
+    // console.log(user)
   
     if (!user) {
         // console.log("User not found.");
@@ -69,6 +71,7 @@ export const requiredRole = (role: string) => {
         const userRoles = req.user.roles;
 
         if (userRoles === role) {
+            // console.log('Verification admin successfully')
             next();
 
         } else {
