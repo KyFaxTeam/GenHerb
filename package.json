@@ -10,7 +10,7 @@
     "dev": "nodemon",
     "tsc": "tsc --watch",
     "start" : "node .",
-    "vercel-build": "echo bonjour"
+    "vercel-build": "mkdir -p tmp/logs && touch tmp/logs/error.log"
 
   },
   "author": "",
