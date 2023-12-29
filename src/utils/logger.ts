@@ -2,6 +2,10 @@ import {createLogger, format, transports} from "winston";
 const {combine, timestamp, prettyPrint, splat, printf, colorize, uncolorize} = format ;
 import config from "../config";
 
+
+const rootPath = process.env.VERCEL_ROOT_PATH;
+const logDir = `${rootPath}/${config.logDirectory}`;
+
 const logger = createLogger({
     // level: config.env === "development" ? "debug" : "info",
     format: combine(
@@ -13,7 +17,7 @@ const logger = createLogger({
     ),
     transports: [
         config.env === "development" ? new transports.Console() :
-            new transports.File({ filename: `${config.logDirectory}/error.log` }) 
+            new transports.File({ filename: `${logDir}/error.log` }) 
       
     ],
 });
