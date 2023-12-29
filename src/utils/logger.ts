@@ -17,7 +17,7 @@ const logger = createLogger({
     ),
     transports: [
         config.env === "development" ? new transports.Console() :
-            new transports.File({ filename: `tmp/logs/error.log` }) 
+            new transports.File({ filename: `/tmp/logs/error.log` }) 
       
     ],
 });
