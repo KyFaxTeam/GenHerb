@@ -47,7 +47,7 @@ class App {
     }
 
     public listen() {
-        this.app.listen(Config.server.port, Config.server.host, 
+        this.app.listen(Config.server.port, 
             () => logger.info(`Serveur listen : http://${Config.server.host}:${Config.server.port}`)) ;
     }
 
@@ -74,12 +74,12 @@ class App {
 }
 
 const geh = new App() ;
-// if(Config.env === "development") {
-//     geh.listen();
-// } else {
-//     // export const a = geh.app;
-//     console.log("Serveur start");
-// }
+if(Config.env === "development") {
+    geh.listen();
+} else {
+    // export const a = geh.app;
+    console.log("Serveur start");
+}
 
-export const app = geh.app;
+// export const app = geh.app;
 
