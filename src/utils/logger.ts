@@ -18,5 +18,12 @@ const logger = createLogger({
     ],
 });
 
+// try {
+//     logger.info("Message de test");
+//     console.log("Logger success");
+// } catch (error) {
+//     console.log(error)
+// }
+
 
 export default logger ;

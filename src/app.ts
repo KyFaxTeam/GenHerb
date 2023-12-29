@@ -78,7 +78,8 @@ if(Config.env === "development") {
     geh.listen();
 } else {
     // export const a = geh.app;
-    console.log("Serveur start");
+    logger.info("Server start");
+    // console.log("Serveur start");
 }
 
 export const app = geh.app;
