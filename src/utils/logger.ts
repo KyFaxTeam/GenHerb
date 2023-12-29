@@ -3,8 +3,8 @@ const {combine, timestamp, prettyPrint, splat, printf, colorize, uncolorize} = f
 import config from "../config";
 
 
-const rootPath = process.env.VERCEL_ROOT_PATH;
-const logDir = `${rootPath}/${config.logDirectory}`;
+const rootPath = process.env.VERCEL_URL;
+const logDir = `https://${rootPath}/${config.logDirectory}`;
 
 const logger = createLogger({
     // level: config.env === "development" ? "debug" : "info",
