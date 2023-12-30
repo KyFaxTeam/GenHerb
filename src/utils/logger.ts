@@ -3,9 +3,6 @@ const {combine, timestamp, prettyPrint, splat, printf, colorize, uncolorize} = f
 import config from "../config";
 
 
-const rootPath = process.env.VERCEL_URL;
-const logDir = `https://${rootPath}/${config.logDirectory}`;
-
 const logger = createLogger({
     // level: config.env === "development" ? "debug" : "info",
     format: combine(
@@ -17,7 +14,7 @@ const logger = createLogger({
     ),
     transports: [
         config.env === "development" ? new transports.Console() :
-            new transports.File({ filename: `/tmp/logs/error.log` }) 
+            new transports.File({ filename: `${config.logDirectory}/error.log` }) 
       
     ],
 });
