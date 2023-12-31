@@ -9,9 +9,9 @@
     "lint:fix": "eslint . --fix",
     "dev": "nodemon",
     "tsc": "tsc --watch",
+    "production" : "node ./build/app.js",
     "start" : "node .",
     "vercel-build": "echo bonjour"
-
   },
   "author": "",
   "license": "ISC",
