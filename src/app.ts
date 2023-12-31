@@ -49,9 +49,12 @@ class App {
 
     private async dataBaseIsReady() {
         await dbSource.initialize()
-            .then(() => logger.info(
-                "The database is connected."
-            ))
+            .then(() => {
+                logger.info("The database is connected.");
+                this.app.emit('databaseReady'); 
+            })
+
+            
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
             .catch((_error) =>  { 
                 console.log(_error);
