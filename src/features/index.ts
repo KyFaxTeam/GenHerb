@@ -38,6 +38,7 @@ export default class Features {
      * @returns void
      */
     public init() {
+        console.log('Initialisation des features')
         this.featuresLists.forEach((e: BaseFeature) => e.init());
     }
 }

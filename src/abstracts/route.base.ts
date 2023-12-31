@@ -1,5 +1,7 @@
 import express, { Router } from "express";
 import valideRequest from "../utils/validate";
+import ApiError from "../utils/apiError";
+import Config from "../config";
 
 export default abstract class BaseRoute{
 
@@ -17,10 +19,12 @@ export default abstract class BaseRoute{
     public constructor(app : express.Application, path: string, controller : any) {
         this.app = app,
         this.path = path;
-        this.controller = controller,
+        this.controller = controller;
         this.validator = valideRequest; 
 
     }
+
+    
 
     /**
      * Initialize the router

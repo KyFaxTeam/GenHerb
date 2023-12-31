@@ -29,7 +29,8 @@ class App {
 
     private async init() {
         try {
-            await this.dataBaseIsReady();
+
+            this.dataBaseIsReady();
 
             // Features instances
             this.features = new Features(this.app) ;
@@ -48,10 +49,17 @@ class App {
     }
 
     private async dataBaseIsReady() {
-        await dbSource.initialize()
-            .then(() => logger.info(
-                "The database is connected."
-            ))
+
+        dbSource.initialize()
+            .then(() => {
+                logger.info("The database is connected.");
+                console.log("Config.isReady ? : ", Config.dbIsReady)
+                Config.dbIsReady = true
+                // this.app.emit('databaseReady'); 
+
+            })
+
+            
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
             .catch((_error) =>  { 
                 console.log(_error);
