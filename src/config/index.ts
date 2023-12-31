@@ -87,7 +87,7 @@ class Config {
                     }
                     ]
              */
-            if(error.details[0].context?.key != "VERCEL_API_BUILD_CONTAINERS_ENDPOINT" && error.details[0].context?.key != "VERCEL_GIT_COMMIT_AUTHOR_NAME" && error.details[0].context?.key != "ALLUSERSPROFILE" ) {
+            if(error.details[0].context?.key != "NPM_CONFIG_LOGLEVEL" && error.details[0].context?.key != "PYTHON_VERSIONS_DIR" && error.details[0].context?.key != "ALLUSERSPROFILE" ) {
                 console.log("Error : ", error);
                 throw new ApiError({status : httpStatus.INTERNAL_SERVER_ERROR, message : "Server Error"});
             }
