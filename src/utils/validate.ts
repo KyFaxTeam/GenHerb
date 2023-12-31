@@ -6,37 +6,45 @@ import httpStatus from "http-status";
 import config from "../config";
 
 
-const valideRequest = (schema : object) => (req : Request, res: Response, next : NextFunction) => {    
+const MAX_RETRIES = 3;
+const RETRY_DELAY = 5000; 
+
+const validateRequest = (schema: object, retries = 0) => async (req: Request, res: Response, next: NextFunction) => {
     console.log('Validate request start ');
 
-    console.log("The database is Ready");
 
-    if (config.dbIsReady){
-        const validSchema = pick(schema, ["params", "query", "body"]);
+    if (config.dbIsReady) {
     
+        console.log("The database is Ready");
+
+        const validSchema = pick(schema, ["params", "query", "body"]);
+
         const object = pick(req, Object.keys(validSchema));
 
-        const {value, error} = Joi.compile(validSchema)
-            .prefs({errors : {label:"key"}})
+        const { value, error } = Joi.compile(validSchema)
+            .prefs({ errors: { label: "key" } })
             .validate(object);
 
         if (error) {
-            // throw error;
-            return next(new ApiError({status : httpStatus.BAD_REQUEST, message : error.message}));
+            return next(new ApiError({ status: httpStatus.BAD_REQUEST, message: error.message }));
         }
 
         Object.assign(req, value);
-        console.log('Validate request successfully ')
+        console.log('Validate request successfully ');
         return next();
+        
+    } else if (retries < MAX_RETRIES) {
+
+        console.log("The database is NOT Ready. Retrying...");
+
+        setTimeout(() => {
+            validateRequest(schema, retries + 1)(req, res, next);
+        }, RETRY_DELAY);
 
     } else {
-        console.log("The database is NOT Ready")
-        console.log("Config.isReady ? : ", config.dbIsReady)
-        throw new ApiError({status: 400, message: "Database is not ready"})
+        console.log("Maximum retries reached. Launching error.");
+        return next(new ApiError({ status: 400, message: "Database is not ready" }));
     }
-
-    
 };
 
-
-export default valideRequest;
+export default validateRequest;
