@@ -24,32 +24,31 @@ class App {
         // - Middlewares before features
         this.plugMiddlewareBeforeFeatures();
 
-        // check state of database
-        this.dataBaseIsReady()
-            .then(() => {
-                // - Features instanci
-                    this.features = new Features(this.app) ;
-                // Features initialize
-                    this.features.init();
+        this.init();
+    }
 
-                // Middlewares after features
-                    this.plugMiddlewareAfterFeatures();
-        })
-        .catch((error) => {
+    private async init() {
+        try {
+            await this.dataBaseIsReady();
+
+            // Features instances
+            this.features = new Features(this.app) ;
+
+            // Features initialize
+            this.features.init();
+
+            // Middlewares after features
+            this.plugMiddlewareAfterFeatures();
+
+
+        } catch (error) {
             console.error(error);
-        });
-
-        // - Features instanci
-        // this.features = new Features(this.app) ;
-        // // Features initialize
-        // this.features.init();
-
-        // // Middlewares after features
-        // this.plugMiddlewareAfterFeatures();
+            throw new ApiError({status: 400, message:"Unable to initialize the application." })
+        }
     }
 
     private async dataBaseIsReady() {
-        dbSource.initialize()
+        await dbSource.initialize()
             .then(() => logger.info(
                 "The database is connected."
             ))
