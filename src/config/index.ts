@@ -66,7 +66,7 @@ class Config {
 
             LIMIT_QUIZ : Joi.number().required().description("The maw number of quiz to send a user")
 
-        });
+        }).unknown(true);
 
         const {value: envVars, error} = Joi.compile(envVarSchema).prefs({errors : {label : "key"}}).validate(process.env) ;
 
