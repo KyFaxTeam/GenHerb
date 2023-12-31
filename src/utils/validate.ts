@@ -6,11 +6,11 @@ import httpStatus from "http-status";
 import config from "../config";
 
 
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 5000; 
+const MAX_RETRIES = config.MaxRetries;
+const RETRY_DELAY = config.RetryDelay; 
 
 const validateRequest = (schema: object, retries = 0) => async (req: Request, res: Response, next: NextFunction) => {
-    console.log('Validate request start ');
+    // console.log('Validate request start ');
 
 
     if (config.dbIsReady) {
@@ -30,7 +30,7 @@ const validateRequest = (schema: object, retries = 0) => async (req: Request, re
         }
 
         Object.assign(req, value);
-        console.log('Validate request successfully ');
+        // console.log('Validate request successfully ');
         return next();
         
     } else if (retries < MAX_RETRIES) {

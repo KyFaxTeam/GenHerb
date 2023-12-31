@@ -51,7 +51,7 @@ class App {
         dbSource.initialize()
             .then(() => {
                 logger.info("The database is connected.");
-                console.log("Config.isReady ? : ", Config.dbIsReady)
+                // console.log("Config.isReady ? : ", Config.dbIsReady)
                 Config.dbIsReady = true
                 // this.app.emit('databaseReady'); 
 
