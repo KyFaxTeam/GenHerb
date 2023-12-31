@@ -24,31 +24,32 @@ class App {
         // - Middlewares before features
         this.plugMiddlewareBeforeFeatures();
 
-        this.init();
-    }
+        // check state of database
+        this.dataBaseIsReady()
+            .then(() => {
+                // - Features instanci
+                    this.features = new Features(this.app) ;
+                // Features initialize
+                    this.features.init();
 
-    private async init() {
-        try {
-            await this.dataBaseIsReady();
-
-            // Features instances
-            this.features = new Features(this.app) ;
-
-            // Features initialize
-            this.features.init();
-
-            // Middlewares after features
-            this.plugMiddlewareAfterFeatures();
-
-
-        } catch (error) {
+                // Middlewares after features
+                    this.plugMiddlewareAfterFeatures();
+        })
+        .catch((error) => {
             console.error(error);
-            throw new ApiError({status: 400, message:"Unable to initialize the application." })
-        }
+        });
+
+        // - Features instanci
+        // this.features = new Features(this.app) ;
+        // // Features initialize
+        // this.features.init();
+
+        // // Middlewares after features
+        // this.plugMiddlewareAfterFeatures();
     }
 
     private async dataBaseIsReady() {
-        await dbSource.initialize()
+        dbSource.initialize()
             .then(() => logger.info(
                 "The database is connected."
             ))
@@ -95,4 +96,3 @@ if(Config.env === "development") {
 }
 
 export const app = geh.app;
-
