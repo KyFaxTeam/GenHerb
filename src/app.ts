@@ -29,7 +29,7 @@ class App {
 
     private async init() {
         try {
-            this.dataBaseIsReady();
+            await this.dataBaseIsReady();
 
             // Features instances
             this.features = new Features(this.app) ;
