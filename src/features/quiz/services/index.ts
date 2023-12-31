@@ -22,13 +22,19 @@ export class QuizService extends BaseService<Quiz> {
     */
 
     public async getQuiz(thematic:string): Promise<any> {
-
-        const result = await this.repo
-            .createQueryBuilder("quiz")
-            .select(["quiz.id", "quiz.question", "quiz.answer", "quiz.points", "quiz.times"])
-            .where("quiz.thematic = :thematic", {thematic: thematic })
-            .orderBy("RANDOM()")
-            .take(config.limitQuiz).getMany(); 
+        
+        const result = thematic == "Général" 
+            ? await this.repo
+                .createQueryBuilder("quiz")
+                .select(["quiz.id", "quiz.question", "quiz.answer", "quiz.points", "quiz.times", "quiz.thematic", "quiz.subThematic"])
+                .orderBy("RANDOM()")
+                .take(config.limitQuiz).getMany() 
+            : await this.repo
+                .createQueryBuilder("quiz")
+                .select(["quiz.id", "quiz.question", "quiz.answer", "quiz.points", "quiz.times", "quiz.thematic", "quiz.subThematic"])
+                .where("quiz.thematic = :thematic", {thematic: thematic })
+                .orderBy("RANDOM()")
+                .take(config.limitQuiz).getMany(); 
         
         // if thematic doesn't exist
         if (result.length == 0) {

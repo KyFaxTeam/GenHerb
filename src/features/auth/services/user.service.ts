@@ -70,8 +70,10 @@ export class UserService extends BaseService<User> {
     }
 
     async validateUserCredentials(mail: string, password: string): Promise<boolean> {
+        // console.log("email: ", mail)
         const user = await this.repository.findOne({ where: { email: mail } });
-    
+        // console.log("user : ", user)
+        
         if (user && await verifyHash(password, user.password)) {
           return true;
         }

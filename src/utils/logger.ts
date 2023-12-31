@@ -2,6 +2,7 @@ import {createLogger, format, transports} from "winston";
 const {combine, timestamp, prettyPrint, splat, printf, colorize, uncolorize} = format ;
 import config from "../config";
 
+
 const logger = createLogger({
     // level: config.env === "development" ? "debug" : "info",
     format: combine(
@@ -17,6 +18,13 @@ const logger = createLogger({
       
     ],
 });
+
+// try {
+//     logger.info("Message de test");
+//     console.log("Logger success");
+// } catch (error) {
+//     console.log(error)
+// }
 
 
 export default logger ;

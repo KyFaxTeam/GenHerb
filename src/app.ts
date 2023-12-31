@@ -15,7 +15,8 @@ class App {
     // - Express app
     public app: express.Application ;
 
-    private features: Features;
+    private features!: Features;
+
     constructor() {
         // - Express App initialize
         this.app  = express() ;
@@ -24,18 +25,30 @@ class App {
         this.plugMiddlewareBeforeFeatures();
 
         // check state of database
-        this.dataBaseIsReady();
+        this.dataBaseIsReady()
+            .then(() => {
+                // - Features instanci
+                    this.features = new Features(this.app) ;
+                // Features initialize
+                    this.features.init();
+
+                // Middlewares after features
+                    this.plugMiddlewareAfterFeatures();
+        })
+        .catch((error) => {
+            console.error(error);
+        });
 
         // - Features instanci
-        this.features = new Features(this.app) ;
-        // Features initialize
-        this.features.init();
+        // this.features = new Features(this.app) ;
+        // // Features initialize
+        // this.features.init();
 
-        // Middlewares after features
-        this.plugMiddlewareAfterFeatures();
+        // // Middlewares after features
+        // this.plugMiddlewareAfterFeatures();
     }
 
-    private dataBaseIsReady() {
+    private async dataBaseIsReady() {
         dbSource.initialize()
             .then(() => logger.info(
                 "The database is connected."
@@ -78,7 +91,9 @@ if(Config.env === "development") {
     geh.listen();
 } else {
     // export const a = geh.app;
-    console.log("Serveur start");
+    logger.info("Server start");
+    // console.log("Serveur start");
 }
 
 export const app = geh.app;
+

@@ -1,18 +1,18 @@
 import httpStatus from "http-status";
 import { BaseService } from "../../../abstracts/service.base";
-import config from "../../../config";
+
 import { dbSource } from "../../../config/data.source";
 import ApiError from "../../../utils/apiError";
 
 import { StatsEvent } from "../entities";
-import { object } from "joi";
+
 
 
 export class StatsEventService extends BaseService<StatsEvent> {
 
     private repo = dbSource.getRepository(StatsEvent);
     public constructor() {
-        super("quiz", StatsEvent); 
+        super("Stats Event", StatsEvent); 
     }
 
     public async getStatsWithEventId(id: number): Promise<any> {
