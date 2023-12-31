@@ -45,6 +45,8 @@ class Config {
     public limitQuiz : number ;
     public secretKey: string;
 
+    public dbIsReady: boolean;
+
     private constructor() {
         const envVarSchema = Joi.object().keys({
             //  Env
@@ -114,6 +116,8 @@ class Config {
         this.env = envVars.NODE_ENV;
         this.limitQuiz = envVars.LIMIT_QUIZ;
         this.secretKey = envVars.JWT_SECRET_KEY;
+
+        this.dbIsReady = false
 
     }
 
