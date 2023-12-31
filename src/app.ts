@@ -29,6 +29,7 @@ class App {
 
     private async init() {
         try {
+
             this.dataBaseIsReady();
 
             // Features instances
@@ -48,6 +49,7 @@ class App {
     }
 
     private async dataBaseIsReady() {
+
         dbSource.initialize()
             .then(() => {
                 logger.info("The database is connected.");
