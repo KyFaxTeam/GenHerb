@@ -6,33 +6,25 @@ import httpStatus from "http-status";
 import config from "../config";
 
 
-const MAX_RETRIES = 3;
-const RETRY_DELAY = 5000; 
+const MAX_RETRIES = config.MaxRetries;
+const RETRY_DELAY = config.RetryDelay; 
 
-const validateRequest = (schema: object, retries = 0) => async (req: Request, res: Response, next: NextFunction) => {
-    console.log('Validate request start ');
+const validateRequest = (schema: object | null, retries = 0) => async (req: Request, res: Response, next: NextFunction) => {
+    // console.log('Validate request start ');
 
 
     if (config.dbIsReady) {
     
         console.log("The database is Ready");
 
-        const validSchema = pick(schema, ["params", "query", "body"]);
-
-        const object = pick(req, Object.keys(validSchema));
-
-        const { value, error } = Joi.compile(validSchema)
-            .prefs({ errors: { label: "key" } })
-            .validate(object);
-
-        if (error) {
-            return next(new ApiError({ status: httpStatus.BAD_REQUEST, message: error.message }));
+        if (schema) {
+            validationSchema(schema, req, res, next)
+        } else {
+            console.log("You're not sent schema ")
+            return next();
         }
 
-        Object.assign(req, value);
-        console.log('Validate request successfully ');
-        return next();
-        
+           
     } else if (retries < MAX_RETRIES) {
 
         console.log("The database is NOT Ready. Retrying...");
@@ -46,5 +38,26 @@ const validateRequest = (schema: object, retries = 0) => async (req: Request, re
         return next(new ApiError({ status: 400, message: "Database is not ready" }));
     }
 };
+
+const validationSchema = (schema: object, req: Request, res: Response, next: NextFunction) => {
+
+    console.log("I'm validation Schema")
+
+    const validSchema = pick(schema, ["params", "query", "body"]);
+
+        const object = pick(req, Object.keys(validSchema));
+
+        const { value, error } = Joi.compile(validSchema)
+            .prefs({ errors: { label: "key" } })
+            .validate(object);
+
+        if (error) {
+            return next(new ApiError({ status: httpStatus.BAD_REQUEST, message: error.message }));
+        }
+
+        Object.assign(req, value);
+        // console.log('Validate request successfully ');
+        return next();
+}
 
 export default validateRequest;

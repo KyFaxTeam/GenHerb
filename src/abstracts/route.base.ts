@@ -1,7 +1,6 @@
 import express, { Router } from "express";
 import valideRequest from "../utils/validate";
-import ApiError from "../utils/apiError";
-import Config from "../config";
+
 
 export default abstract class BaseRoute{
 

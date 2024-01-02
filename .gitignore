@@ -2,7 +2,6 @@
 node_modules
 
 # files
-vercel.json
 .env
 .env.dev
 

@@ -47,6 +47,10 @@ class Config {
 
     public dbIsReady: boolean;
 
+    public MaxRetries: number;
+
+    public RetryDelay: number;
+
     private constructor() {
         const envVarSchema = Joi.object().keys({
             //  Env
@@ -118,6 +122,10 @@ class Config {
         this.secretKey = envVars.JWT_SECRET_KEY;
 
         this.dbIsReady = false
+
+        this.MaxRetries = 3; 
+
+        this.RetryDelay = 5000;
 
     }
 
