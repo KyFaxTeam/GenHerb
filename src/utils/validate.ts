@@ -4,6 +4,7 @@ import Joi from "joi";
 import ApiError from "./apiError";
 import httpStatus from "http-status";
 import config from "../config";
+import logger from "./logger";
 
 
 const MAX_RETRIES = config.MaxRetries;
@@ -15,33 +16,30 @@ const validateRequest = (schema: object | null, retries = 0) => async (req: Requ
 
     if (config.dbIsReady) {
     
-        console.log("The database is Ready");
+        logger.info("The database is Ready");
 
         if (schema) {
             validationSchema(schema, req, res, next)
         } else {
-            console.log("You're not sent schema ")
+            logger.info("You're not sent schema ")
             return next();
         }
 
-           
     } else if (retries < MAX_RETRIES) {
 
-        console.log("The database is NOT Ready. Retrying...");
+        logger.info("The database is NOT Ready. Retrying...");
 
         setTimeout(() => {
             validateRequest(schema, retries + 1)(req, res, next);
         }, RETRY_DELAY);
 
     } else {
-        console.log("Maximum retries reached. Launching error.");
+        logger.info("Maximum retries reached. Launching error.");
         return next(new ApiError({ status: 400, message: "Database is not ready" }));
     }
 };
 
 const validationSchema = (schema: object, req: Request, res: Response, next: NextFunction) => {
-
-    console.log("I'm validation Schema")
 
     const validSchema = pick(schema, ["params", "query", "body"]);
 

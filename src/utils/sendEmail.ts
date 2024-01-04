@@ -1,5 +1,6 @@
 import nodemailer from 'nodemailer';
 import ApiError from './apiError';
+import logger from './logger';
 
 export class EmailService {
   private transporter: nodemailer.Transporter;
@@ -36,7 +37,7 @@ export class EmailService {
     try {
       // Send Email
       await this.transporter.sendMail(mailOptions);
-      console.log('Email sent successfully.');
+      logger.info('Email sent successfully.');
     } catch (error) {
       console.error('Error sending email:', error);
       // Handle the error, e.g., throw an exception or log it
@@ -66,7 +67,7 @@ export class EmailService {
     try {
       // Send Email
       await this.transporter.sendMail(mailOptions);
-      console.log('Email sent successfully.');
+      logger.info('Email sent successfully.');
     } catch (error) {
       console.error('Error sending email:', error);
       // Handle the error, e.g., throw an exception or log it

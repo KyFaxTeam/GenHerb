@@ -43,7 +43,7 @@ class App {
 
 
         } catch (error) {
-            console.error(error);
+            logger.error(error);
             throw new ApiError({status: 400, message:"Unable to initialize the application." })
         }
     }
@@ -98,8 +98,9 @@ if(Config.env === "development") {
     geh.listen();
 } else {
     // export const a = geh.app;
-    logger.info("Server start");
+    logger.info("Server start in production");
     // console.log("Serveur start");
+    //  geh.listen();
 }
 
 export const app = geh.app;
